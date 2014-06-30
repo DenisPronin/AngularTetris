@@ -6,7 +6,7 @@
         "angular-ui-bootstrap": "latest",
         "angular-bootstrap": "latest",
         "bootstrap": "latest",
-        "jquery": "latest"
-
+        "jquery": "latest",
+        "underscore": "latest"
     }
 }

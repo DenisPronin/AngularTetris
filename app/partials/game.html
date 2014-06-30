@@ -1,3 +1,8 @@
-<div>
-    gameField
+<div id="gameContainer">
+    <table class="game_area">
+        <tr ng-repeat="row in rows">
+            <td ng-repeat="cell in row" ng-class="getClassFor(cell)" class="game-cell">
+            </td>
+        </tr>
+    </table>
 </div>
