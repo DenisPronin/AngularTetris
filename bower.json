@@ -1,0 +1,12 @@
+{
+    "name": "AngularTetris",
+    "version": "0.0.1",
+    "dependencies": {
+        "angular-seed": "latest",
+        "angular-ui-bootstrap": "latest",
+        "angular-bootstrap": "latest",
+        "bootstrap": "latest",
+        "jquery": "latest"
+
+    }
+}
