@@ -1,8 +1,17 @@
 <div id="gameContainer">
     <table class="game_area">
         <tr ng-repeat="row in rows">
-            <td ng-repeat="cell in row" ng-class="getClassFor(cell)" class="game-cell">
+            <td ng-repeat="cell in row" ng-class="getClassFor(cell.type_figure)" class="board_cell">
             </td>
         </tr>
     </table>
+    <div class="controls">
+        <input type="button" class="pull-left" value="New Game" ng-click="launch_new_game()"/>
+        <input type="button" class="pull-left" value="Rotate" ng-click="rotate()"/>
+        <input type="button" class="pull-left" value="Left" ng-click="left()"/>
+        <input type="button" class="pull-left" value="Right" ng-click="right()"/>
+        <input type="button" class="pull-left" value="Down" ng-click="down()"/>
+
+
+    </div>
 </div>

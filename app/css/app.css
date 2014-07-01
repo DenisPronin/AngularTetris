@@ -1,0 +1,28 @@
+.game_area{
+    border-collapse: collapse;
+}
+
+.game_area td{
+    width: 20px;
+    height: 20px;
+    border: 1px solid #000000;
+}
+
+#gameContainer{
+    padding: 15px;
+}
+
+.block_line{
+    background-color: #0FF;
+}
+
+.block_l_left{
+    background-color: #F0F;
+}
+
+/*@cyanBlock: mix(@bodyBackground, #0FF, 70%);*/
+/*@purpleBlock: mix(@bodyBackground, #F0F, 70%);*/
+/*@yellowBlock: mix(@bodyBackground, #FF0, 70%);*/
+/*@greenBlock: mix(@bodyBackground, #0F0, 70%);*/
+/*@redBlock: mix(@bodyBackground, #F00, 70%);*/
+/*@blueBlock: mix(@bodyBackground, #00F, 70%);*/
