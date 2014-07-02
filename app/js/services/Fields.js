@@ -104,7 +104,6 @@ services.factory('Fields', ['$filter', 'Figures', function($filter, $figures){
         for (var i = 0; i < zone.length; i++) {
             var row = zone[i];
             for (var j = 0; j < row.length; j++) {
-                var col = row[j];
                 var coords = zone[i][j];
                 if(coords){
                     me.removeFillFromField(coords.row, coords.col);
