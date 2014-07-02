@@ -49,7 +49,7 @@ services.factory('Fields', ['$filter', 'Figures', function($filter, $figures){
 
     me.removeFillFromField = function(row, col){
         var _field = me.getFieldByCoord(row, col);
-        if(_field){
+        if(_field.type_figure != 'border'){
             _field.fill = false;
             _field.type_figure = '';
         }
@@ -82,22 +82,45 @@ services.factory('Fields', ['$filter', 'Figures', function($filter, $figures){
     };
 
     // operations with figures
-    me.setZone = function(figure, start_row, start_col){
-        me.clearZone();
+    me.setZone = function(figure, start_row, start_col, board_width, board_height){
+        var _zone = [];
+        var position = figure.getPosition();
         var width = figure.getWidth();
         var height = figure.getHeight();
+        var upLimit = false;
         for (var i = 0; i < width; i++) {
             var row = [];
-//                if(start_row + i  < $scope.board_width){
-            for (var j = 0; j < height; j++) {
-                //if(start_col + j < $scope.board_height){
-                var field = me.getFieldByCoord(start_row + i, start_col + j);
-                if(field){
-                    row.push({row: field.row, col: field.col});
+            if(start_row >= 0 && start_row + i  < board_height){
+                for (var j = 0; j < height; j++) {
+                    if(start_col >= 0 && start_col + j < board_width){
+                        var field = me.getFieldByCoord(start_row + i, start_col + j);
+                        if(field){
+                            if(field.fill == true && position[i][j] == 1){
+                                upLimit = true;
+                                break;
+                            }
+                            else{
+                                row.push({row: field.row, col: field.col});
+                            }
+                        }
+                    }
+                    else{
+                        upLimit = true;
+                        break;
+                    }
                 }
+                _zone.push(row);
             }
-            zone.push(row);
+            else{
+                upLimit = true;
+                break;
+            }
         }
+        if(!upLimit){
+            zone = _zone;
+            return true;
+        }
+        else return false;
     };
 
     me.clearZone = function(){
@@ -110,7 +133,6 @@ services.factory('Fields', ['$filter', 'Figures', function($filter, $figures){
                 }
             }
         }
-        zone = [];
     };
 
     me.fillZone = function(figure){

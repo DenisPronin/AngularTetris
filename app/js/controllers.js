@@ -5,14 +5,19 @@
 var ctrls = angular.module('AppTetris.controllers', []);
 
 ctrls.controller('BoardCtrl', ['$scope', 'Fields', 'Figures', function($scope, $fields, $figures) {
-    $scope.board_width = 10;
+    $scope.board_width = 14;
     $scope.board_height = 20;
     $scope.rows = null;
 
     var initBoard = function(){
         for (var i = 0; i < $scope.board_height; i++) {
             for (var j = 0; j < $scope.board_width;j++){
-                $fields.addField(i, j, false, '');
+                if(j < 2 || j >= $scope.board_width -2){
+                    $fields.addField(i, j, true, 'border');
+                }
+                else{
+                    $fields.addField(i, j, false, '');
+                }
             }
         }
         $scope.rows = $fields.getFields();
@@ -23,11 +28,11 @@ ctrls.controller('BoardCtrl', ['$scope', 'Fields', 'Figures', function($scope, $
 
     $scope.addFigureForMove = function(){
         var start_row = 0;
-        var start_col = 0;
+        var start_col = 2;
 
         var figure = $figures.getRandomFigure();
         figure.setPosition(null);
-        $fields.setZone(figure, start_row, start_col);
+        $fields.setZone(figure, start_row, start_col, $scope.board_width, $scope.board_height);
         $fields.fillZone(figure);
         $scope.movingFigure = {
             start_row: start_row,
@@ -45,13 +50,14 @@ ctrls.controller('BoardCtrl', ['$scope', 'Fields', 'Figures', function($scope, $
         var mf = $scope.movingFigure;
         var figure = mf.figure;
 
-        if(mf.start_col + 1 + figure.getWidth() <= $scope.board_width){
-            mf.start_col++;
-            $fields.setZone(figure, mf.start_row, mf.start_col);
+        mf.start_col++;
+        $fields.clearZone();
+        var zoneChanged = $fields.setZone(figure, mf.start_row, mf.start_col, $scope.board_width, $scope.board_height);
+        if(zoneChanged){ // shifting of zone is occured
             $fields.fillZone(figure);
         }
-        else{
-            console.log('End of field!');
+        else{   // zone remained in place
+            $fields.fillZone(figure);
         }
     };
 
@@ -83,8 +89,8 @@ ctrls.controller('BoardCtrl', ['$scope', 'Fields', 'Figures', function($scope, $
         }
     };
 
-    $scope.getClassFor = function(figure){
-        return  'block_' + figure;
+    $scope.getClassFor = function(cell){
+        return  'cell_' + cell.row + '_' + cell.col + ' block_' + cell.type_figure;
     };
 
 }]);

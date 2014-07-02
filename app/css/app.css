@@ -12,6 +12,10 @@
     padding: 15px;
 }
 
+.block_border{
+    background-color: #000;
+}
+
 .block_line{
     background-color: #0FF;
 }
