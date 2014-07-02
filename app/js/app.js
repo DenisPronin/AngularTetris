@@ -14,3 +14,6 @@ config(['$routeProvider', function($routeProvider) {
     $routeProvider.when('/', {templateUrl: 'partials/game.html', controller: 'BoardCtrl'});
     $routeProvider.otherwise({redirectTo: '/'});
 }]);
+
+var services = angular.module('AppTetris.services', []);
+

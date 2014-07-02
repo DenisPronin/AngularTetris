@@ -20,6 +20,10 @@
     background-color: #F0F;
 }
 
+.block_l_right{
+    background-color: #FF0;
+}
+
 /*@cyanBlock: mix(@bodyBackground, #0FF, 70%);*/
 /*@purpleBlock: mix(@bodyBackground, #F0F, 70%);*/
 /*@yellowBlock: mix(@bodyBackground, #FF0, 70%);*/

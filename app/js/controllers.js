@@ -7,6 +7,7 @@ var ctrls = angular.module('AppTetris.controllers', []);
 ctrls.controller('BoardCtrl', ['$scope', 'Fields', 'Figures', function($scope, $fields, $figures) {
     $scope.board_width = 10;
     $scope.board_height = 20;
+    $scope.rows = null;
 
     var initBoard = function(){
         for (var i = 0; i < $scope.board_height; i++) {
@@ -21,27 +22,18 @@ ctrls.controller('BoardCtrl', ['$scope', 'Fields', 'Figures', function($scope, $
     $scope.movingFigure = {};
 
     $scope.addFigureForMove = function(){
+        var start_row = 0;
+        var start_col = 0;
+
         var figure = $figures.getRandomFigure();
-        var figure_type = figure.getName();
-        var figure_width = figure.getWidth();
-        var figure_height = figure.getHeight();
-        var random_position = figure.getRandomPosition();
-        var positions = figure.getPositions();
-        var position = positions[random_position];
-
-        var start_row = 0, start_col = 0;
-        if(start_col + figure_width < $scope.board_width){
-
-            for (var i = 0; i < position.length; i++) {
-                var pos_rows = position[i];
-                for (var j = 0; j < pos_rows.length; j++) {
-                    var pos_col = pos_rows[j];
-                    if(pos_col){
-                        $fields.addFillToField(start_row + i, start_col + j, figure_type);
-                    }
-                }
-            }
-        }
+        figure.setPosition(null);
+        $fields.setZone(figure, start_row, start_col);
+        $fields.fillZone(figure);
+        $scope.movingFigure = {
+            start_row: start_row,
+            start_col: start_col,
+            figure: figure
+        };
     };
 
     $scope.launch_new_game = function(){
@@ -49,8 +41,46 @@ ctrls.controller('BoardCtrl', ['$scope', 'Fields', 'Figures', function($scope, $
         $scope.addFigureForMove();
     };
 
-    $scope.rotate = function(){
+    $scope.moveRight = function(){
+        var mf = $scope.movingFigure;
+        var figure = mf.figure;
 
+        if(mf.start_col + 1 + figure.getWidth() <= $scope.board_width){
+            mf.start_col++;
+            $fields.setZone(figure, mf.start_row, mf.start_col);
+            $fields.fillZone(figure);
+        }
+        else{
+            console.log('End of field!');
+        }
+    };
+
+    $scope.moveLeft = function(){
+        var mf = $scope.movingFigure;
+        var figure = mf.figure;
+
+        if(mf.start_col -1 >= 0){
+            mf.start_col--;
+            $fields.setZone(figure, mf.start_row, mf.start_col);
+            $fields.fillZone(figure);
+        }
+        else{
+            console.log('End of field!');
+        }
+    };
+
+    $scope.moveDown = function(){
+        var mf = $scope.movingFigure;
+        var figure = mf.figure;
+
+        if(mf.start_row + figure.getHeight() + 1 <= $scope.board_height){
+            mf.start_row++;
+            $fields.setZone(figure, mf.start_row, mf.start_col);
+            $fields.fillZone(figure);
+        }
+        else{
+            console.log('End of field!');
+        }
     };
 
     $scope.getClassFor = function(figure){
