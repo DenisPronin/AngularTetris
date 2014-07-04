@@ -3,8 +3,9 @@
 /* Directives */
 
 
-angular.module('AppTetris.directives', []).
-  directive('appVersion', ['version', function(version) {
+var directives = angular.module('AppTetris.directives', []);
+
+directives.directive('appVersion', ['version', function(version) {
     return function(scope, elm, attrs) {
       elm.text(version);
     };
