@@ -28,9 +28,19 @@
     background-color: #FF0;
 }
 
-/*@cyanBlock: mix(@bodyBackground, #0FF, 70%);*/
-/*@purpleBlock: mix(@bodyBackground, #F0F, 70%);*/
-/*@yellowBlock: mix(@bodyBackground, #FF0, 70%);*/
-/*@greenBlock: mix(@bodyBackground, #0F0, 70%);*/
-/*@redBlock: mix(@bodyBackground, #F00, 70%);*/
-/*@blueBlock: mix(@bodyBackground, #00F, 70%);*/
+.block_square{
+    background-color: #0F0;
+}
+
+.block_l_zigzag{
+    background-color: #F00;
+}
+
+.block_r_zigzag{
+    background-color: #00F;
+}
+
+.block_ship{
+    background-color: #ffa1f2;
+}
+

@@ -4,15 +4,16 @@
 
 var ctrls = angular.module('AppTetris.controllers', []);
 
-ctrls.controller('BoardCtrl', ['$scope', 'Fields', 'Figures', function($scope, $fields, $figures) {
+ctrls.controller('BoardCtrl', ['$scope', '$filter', 'Fields', 'Figures', function($scope, $filter, $fields, $figures) {
     $scope.board_width = 14;
     $scope.board_height = 20;
     $scope.rows = null;
+    var BORDER_WIDTH = 2;
 
     var initBoard = function(){
         for (var i = 0; i < $scope.board_height; i++) {
             for (var j = 0; j < $scope.board_width;j++){
-                if(j < 2 || j >= $scope.board_width -2){
+                if(j < BORDER_WIDTH || j >= $scope.board_width -BORDER_WIDTH){
                     $fields.addField(i, j, true, 'border');
                 }
                 else{
@@ -27,11 +28,12 @@ ctrls.controller('BoardCtrl', ['$scope', 'Fields', 'Figures', function($scope, $
     $scope.movingFigure = {};
 
     $scope.addFigureForMove = function(){
-        var start_row = 0;
-        var start_col = 2;
-
         var figure = $figures.getRandomFigure();
         figure.setPosition(null);
+
+        var start_row = 0;
+        var start_col = $filter('randomNumber')(2, $scope.board_width - BORDER_WIDTH - figure.getWidth());
+
         $fields.setZone(figure, start_row, start_col, $scope.board_width, $scope.board_height);
         $fields.fillZone(figure);
         $scope.movingFigure = {
