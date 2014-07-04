@@ -44,6 +44,16 @@ services.factory('BaseFigure', ['$filter', function($filter){
             }
         };
 
+        me.setNextPosition = function(){
+            if(current_position_num + 1 >= positions.length){
+                current_position_num = 0;
+            }
+            else{
+                current_position_num++;
+            }
+            return me.getPosition();
+        };
+
         me.getPosition = function(){
             return positions[current_position_num];
         };

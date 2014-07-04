@@ -47,46 +47,48 @@ ctrls.controller('BoardCtrl', ['$scope', 'Fields', 'Figures', function($scope, $
     };
 
     $scope.moveRight = function(){
+        move('start_col', true);
+    };
+
+    $scope.moveLeft = function(){
+        move('start_col', false);
+    };
+
+    $scope.moveDown = function(){
+        move('start_row', true);
+    };
+
+    var move = function(coord_changed, added){
         var mf = $scope.movingFigure;
         var figure = mf.figure;
 
-        mf.start_col++;
+        (added) ? mf[coord_changed]++ : mf[coord_changed]--;
         $fields.clearZone();
         var zoneChanged = $fields.setZone(figure, mf.start_row, mf.start_col, $scope.board_width, $scope.board_height);
         if(zoneChanged){ // shifting of zone is occured
             $fields.fillZone(figure);
         }
-        else{   // zone remained in place
+        else{
             $fields.fillZone(figure);
+            (added) ? mf[coord_changed]-- : mf[coord_changed]++;
         }
     };
 
-    $scope.moveLeft = function(){
+    $scope.rotate = function(){
         var mf = $scope.movingFigure;
         var figure = mf.figure;
-
-        if(mf.start_col -1 >= 0){
-            mf.start_col--;
-            $fields.setZone(figure, mf.start_row, mf.start_col);
-            $fields.fillZone(figure);
+        figure.setNextPosition();
+        $fields.clearZone();
+        var exceed = $fields.getExceedCount($scope.board_width, $scope.board_height);
+        if(exceed.left_exceed){
+            mf.start_col += exceed.left_exceed;
+            var zoneChanged = $fields.setZone(figure, mf.start_row, mf.start_col, $scope.board_width, $scope.board_height);
         }
-        else{
-            console.log('End of field!');
+        if(exceed.right_exceed){
+            mf.start_col -= exceed.right_exceed;
+            zoneChanged = $fields.setZone(figure, mf.start_row, mf.start_col, $scope.board_width, $scope.board_height);
         }
-    };
-
-    $scope.moveDown = function(){
-        var mf = $scope.movingFigure;
-        var figure = mf.figure;
-
-        if(mf.start_row + figure.getHeight() + 1 <= $scope.board_height){
-            mf.start_row++;
-            $fields.setZone(figure, mf.start_row, mf.start_col);
-            $fields.fillZone(figure);
-        }
-        else{
-            console.log('End of field!');
-        }
+        $fields.fillZone(figure);
     };
 
     $scope.getClassFor = function(cell){
