@@ -52,18 +52,18 @@ ctrls.controller('BoardCtrl', ['$scope', '$filter', 'Fields', 'Figures', functio
     };
 
     $scope.moveRight = function(){
-        move('start_col', true);
+        move('start_col', true, 'right');
     };
 
     $scope.moveLeft = function(){
-        move('start_col', false);
+        move('start_col', false, 'left');
     };
 
     $scope.moveDown = function(){
-        move('start_row', true);
+        move('start_row', true, 'down');
     };
 
-    var move = function(coord_changed, added){
+    var move = function(coord_changed, added, mode){
         var mf = $scope.movingFigure;
         var figure = mf.figure;
 
@@ -76,6 +76,10 @@ ctrls.controller('BoardCtrl', ['$scope', '$filter', 'Fields', 'Figures', functio
         else{
             $fields.fillZone(figure);
             (added) ? mf[coord_changed]-- : mf[coord_changed]++;
+            console.log('On mode: ' + mode + ' - board is end!!!');
+            if(mode == 'down'){
+                $scope.addFigureForMove();
+            }
         }
     };
 
