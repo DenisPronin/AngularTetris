@@ -6,14 +6,15 @@ var ctrls = angular.module('AppTetris.controllers', []);
 
 ctrls.controller('BoardCtrl', ['$scope', '$filter', 'Fields', 'Figures', function($scope, $filter, $fields, $figures) {
     $scope.board_width = 14;
-    $scope.board_height = 20;
+    $scope.board_height = 24;
     $scope.rows = null;
     var BORDER_WIDTH = 2;
 
     var initBoard = function(){
-        for (var i = 0; i < $scope.board_height; i++) {
+        var board_height = $scope.board_height;
+        for (var i = 0; i < board_height; i++) {
             for (var j = 0; j < $scope.board_width;j++){
-                if(j < BORDER_WIDTH || j >= $scope.board_width -BORDER_WIDTH){
+                if((i < 2 || i >= $scope.board_height - BORDER_WIDTH) || (j < BORDER_WIDTH || j >= $scope.board_width -BORDER_WIDTH)){
                     $fields.addField(i, j, true, 'border');
                 }
                 else{
@@ -31,8 +32,10 @@ ctrls.controller('BoardCtrl', ['$scope', '$filter', 'Fields', 'Figures', functio
         var figure = $figures.getRandomFigure();
         figure.setPosition(null);
 
-        var start_row = 0;
         var start_col = $filter('randomNumber')(2, $scope.board_width - BORDER_WIDTH - figure.getWidth());
+
+        var empty_rows = figure.getEmptyRows();
+        var start_row = BORDER_WIDTH - empty_rows;
 
         $fields.setZone(figure, start_row, start_col, $scope.board_width, $scope.board_height);
         $fields.fillZone(figure);
@@ -88,6 +91,10 @@ ctrls.controller('BoardCtrl', ['$scope', '$filter', 'Fields', 'Figures', functio
         }
         if(exceed.right_exceed){
             mf.start_col -= exceed.right_exceed;
+            zoneChanged = $fields.setZone(figure, mf.start_row, mf.start_col, $scope.board_width, $scope.board_height);
+        }
+        if(exceed.bottom_exceed){
+            mf.start_row += exceed.bottom_exceed;
             zoneChanged = $fields.setZone(figure, mf.start_row, mf.start_col, $scope.board_width, $scope.board_height);
         }
         $fields.fillZone(figure);

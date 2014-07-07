@@ -154,23 +154,35 @@ services.factory('Fields', ['$filter', 'Figures', function($filter, $figures){
 
     me.getExceedCount = function(board_width, board_height){
         var border_width = 2;
-        var left_exceed = 0, right_exceed = 0;
+        var left_exceed = 0, right_exceed = 0, bottom_exceed = 0, top_exceed = 0;
         if(zone.length > 0){
             var first_row = zone[0];
             var first_cell = first_row[0];
+            var isTopExceed = true;
+
+            zone.filter(function(_row){
+                if(_row[0].row < border_width){
+                    bottom_exceed++;
+                }
+            });
+
             if(first_cell != null && first_cell.col < border_width){
                 left_exceed = border_width - first_cell.col;
             }
+
             var last_row = zone[zone.length - 1];
             var last_cell = last_row[last_row.length - 1];
             if(last_cell  != null && last_cell.col >= board_width - border_width){
                 right_exceed = last_cell.col -  (board_width - 1 - border_width);
             }
+
             return {
                 left_exceed: left_exceed,
-                right_exceed: right_exceed
+                right_exceed: right_exceed,
+                bottom_exceed: bottom_exceed
             }
         }
+        return null;
     };
 
     return me;
