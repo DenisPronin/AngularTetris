@@ -18,66 +18,6 @@ services.factory('Figures', ['$filter', 'L_Left', 'L_Right', 'Line', 'Square', '
     return me;
 }]);
 
-services.factory('BaseFigure', ['$filter', function($filter){
-    return function(){
-        var me = this;
-
-        var name = '';
-        var width = 0;
-        var height = 0;
-        var positions = [];
-        var current_position_num = 0;
-
-        me.initFigure = function(_name, _width, _height, _positions){
-            name = _name;
-            width = _width;
-            height = _height;
-            positions = _positions;
-        };
-
-        me.setPosition = function(num){
-            if(!num){ // is random position
-                current_position_num =  $filter('randomNumber')(0, positions.length - 1);
-            }
-            else{
-                current_position_num = num;
-            }
-        };
-
-        me.setNextPosition = function(){
-            if(current_position_num + 1 >= positions.length){
-                current_position_num = 0;
-            }
-            else{
-                current_position_num++;
-            }
-            return me.getPosition();
-        };
-
-        me.getPosition = function(){
-            return positions[current_position_num];
-        };
-
-        me.getPositions =  function(){
-            return positions;
-        };
-
-        me.getName = function(){
-            return name;
-        };
-
-        me.getWidth = function(){
-            return width;
-        };
-
-        me.getHeight = function(){
-            return height;
-        };
-
-        return me;
-    };
-}]);
-
 services.factory('L_Left', ['BaseFigure', function($baseFigure){
     var name = 'l_left';
     var width = 3;
