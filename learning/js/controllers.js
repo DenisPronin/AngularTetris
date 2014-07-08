@@ -13,3 +13,10 @@ ctrls.controller('AppCtrl', ['$scope', function($scope) {
 
 }]);
 
+ctrls.controller('FirstCtrl', ['$scope', 'MyData', function($scope, $data){
+    $scope.data = $data;
+}]);
+
+ctrls.controller('SecondCtrl', ['$scope', 'MyData', function($scope, $data){
+    $scope.data = $data;
+}]);
