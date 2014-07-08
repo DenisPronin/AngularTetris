@@ -81,3 +81,27 @@ directives.directive("dialog", function () {
     }
 });
 
+directives.directive('kid', function(){
+    return {
+        restrict: 'E',
+        scope: {
+            done: '&'
+        },
+        template: '<input type="text" data-ng-model="chore"/>' +
+            '{{ chore }}' +
+            '<input type="button" ng-click="done({chore:chore})" value="Done!">'
+    }
+});
+
+directives.directive('drink', function(){
+    return {
+        restrict: 'A',
+        scope: {
+            flavor: '@'
+        },
+        template: '<div>{{ flavor }}</div>'
+//        link: function (scope, element, attrs){
+//            scope.flavor = attrs.flavor;
+//        }
+    }
+});

@@ -20,3 +20,11 @@ ctrls.controller('FirstCtrl', ['$scope', 'MyData', function($scope, $data){
 ctrls.controller('SecondCtrl', ['$scope', 'MyData', function($scope, $data){
     $scope.data = $data;
 }]);
+
+ctrls.controller('ChoreCtrl', ['$scope', function($scope){
+    $scope.logChore = function(chore){
+        console.log(chore + ' is Done!');
+    };
+
+    $scope.ctrlFlavor = 'blackberry';
+}]);
