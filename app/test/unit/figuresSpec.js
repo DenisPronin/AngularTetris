@@ -2,7 +2,7 @@
 
 /* jasmine specs for services go here */
 
-describe('service', function() {
+describe('figures', function() {
 
     beforeEach(module('AppTetris.services'));
 

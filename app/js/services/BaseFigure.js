@@ -16,7 +16,7 @@ services.factory('BaseFigure', ['$filter', function($filter){
         };
 
         me.setPosition = function(num){
-            if(!num){ // is random position
+            if(num == null){ // is random position
                 current_position_num =  $filter('randomNumber')(0, positions.length - 1);
             }
             else{

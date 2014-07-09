@@ -5,6 +5,29 @@ services.factory('Fields', ['$filter', 'Figures', function($filter, $figures){
     var fields = [];
     var zone = [];
 
+    var board_height, board_width, BORDER_WIDTH;
+
+    me.initBoard = function(_board_height, _board_width, _border_width){
+        initBoardParams(_board_height, _board_width, _border_width);
+        fields = [];
+        for (var i = 0; i < board_height; i++) {
+            for (var j = 0; j < board_width;j++){
+                if((i < 2 || i >= board_height - BORDER_WIDTH) || (j < BORDER_WIDTH || j >= board_width -BORDER_WIDTH)){
+                    me.addField(i, j, true, 'border');
+                }
+                else{
+                    me.addField(i, j, false, '');
+                }
+            }
+        }
+    };
+
+    var initBoardParams = function(_board_height, _board_width, _border_width){
+        board_height = _board_height;
+        board_width = _board_width;
+        BORDER_WIDTH = _border_width;
+    };
+
     me.addField = function(row, col, fill, type_figure){
         if(row != undefined && col != undefined ){
             var _field = {
@@ -28,15 +51,9 @@ services.factory('Fields', ['$filter', 'Figures', function($filter, $figures){
     me.getRandomField = function(){
         var count_rows = me.getRowsLength();
         var count_cols = me.getColsLength();
-        var random_row = $filter('randomNumber')(0, count_rows - 1);
-        var random_col = $filter('randomNumber')(0, count_cols - 1);
+        var random_row = $filter('randomNumber')(BORDER_WIDTH, count_rows - BORDER_WIDTH - 1);
+        var random_col = $filter('randomNumber')(BORDER_WIDTH, count_cols - BORDER_WIDTH - 1);
         return me.getFieldByCoord(random_row, random_col);
-    };
-
-    me.getRandomFieldInRow = function(row){
-        var count_cols = me.getColsLength();
-        var random_col = $filter('randomNumber')(0, count_cols - 1);
-        return me.getFieldByCoord(row, random_col);
     };
 
     me.addFillToField = function(row, col, type_figure){
@@ -82,7 +99,7 @@ services.factory('Fields', ['$filter', 'Figures', function($filter, $figures){
     };
 
     // operations with figures
-    me.setZone = function(figure, start_row, start_col, board_width, board_height){
+    me.setZone = function(figure, start_row, start_col){
         var _zone = [];
         var position = figure.getPosition();
         var width = figure.getWidth();
@@ -152,7 +169,7 @@ services.factory('Fields', ['$filter', 'Figures', function($filter, $figures){
         return zone;
     };
 
-    me.getExceedCount = function(board_width, board_height){
+    me.getExceedCount = function(){
         var border_width = 2;
         var left_exceed = 0, right_exceed = 0, bottom_exceed = 0, top_exceed = 0;
         if(zone.length > 0){

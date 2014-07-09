@@ -11,17 +11,7 @@ ctrls.controller('BoardCtrl', ['$scope', '$filter', 'Fields', 'Figures', functio
     var BORDER_WIDTH = 2;
 
     var initBoard = function(){
-        var board_height = $scope.board_height;
-        for (var i = 0; i < board_height; i++) {
-            for (var j = 0; j < $scope.board_width;j++){
-                if((i < 2 || i >= $scope.board_height - BORDER_WIDTH) || (j < BORDER_WIDTH || j >= $scope.board_width -BORDER_WIDTH)){
-                    $fields.addField(i, j, true, 'border');
-                }
-                else{
-                    $fields.addField(i, j, false, '');
-                }
-            }
-        }
+        $fields.initBoard($scope.board_height, $scope.board_width, BORDER_WIDTH);
         $scope.rows = $fields.getFields();
     };
     initBoard();
@@ -32,12 +22,12 @@ ctrls.controller('BoardCtrl', ['$scope', '$filter', 'Fields', 'Figures', functio
         var figure = $figures.getRandomFigure();
         figure.setPosition(null);
 
-        var start_col = $filter('randomNumber')(2, $scope.board_width - BORDER_WIDTH - figure.getWidth());
-
         var empty_rows = figure.getEmptyRows();
-        var start_row = BORDER_WIDTH - empty_rows;
 
-        $fields.setZone(figure, start_row, start_col, $scope.board_width, $scope.board_height);
+        var start_row = BORDER_WIDTH - empty_rows;
+        var start_col = $filter('randomNumber')(BORDER_WIDTH, $scope.board_width - BORDER_WIDTH - figure.getWidth());
+
+        $fields.setZone(figure, start_row, start_col);
         $fields.fillZone(figure);
         $scope.movingFigure = {
             start_row: start_row,
@@ -47,6 +37,7 @@ ctrls.controller('BoardCtrl', ['$scope', '$filter', 'Fields', 'Figures', functio
     };
 
     $scope.launch_new_game = function(){
+        initBoard();
         $fields.clearFields();
         $scope.addFigureForMove();
     };
@@ -69,7 +60,7 @@ ctrls.controller('BoardCtrl', ['$scope', '$filter', 'Fields', 'Figures', functio
 
         (added) ? mf[coord_changed]++ : mf[coord_changed]--;
         $fields.clearZone();
-        var zoneChanged = $fields.setZone(figure, mf.start_row, mf.start_col, $scope.board_width, $scope.board_height);
+        var zoneChanged = $fields.setZone(figure, mf.start_row, mf.start_col);
         if(zoneChanged){ // shifting of zone is occured
             $fields.fillZone(figure);
         }
@@ -88,18 +79,18 @@ ctrls.controller('BoardCtrl', ['$scope', '$filter', 'Fields', 'Figures', functio
         var figure = mf.figure;
         figure.setNextPosition();
         $fields.clearZone();
-        var exceed = $fields.getExceedCount($scope.board_width, $scope.board_height);
+        var exceed = $fields.getExceedCount();
         if(exceed.left_exceed){
             mf.start_col += exceed.left_exceed;
-            var zoneChanged = $fields.setZone(figure, mf.start_row, mf.start_col, $scope.board_width, $scope.board_height);
+            var zoneChanged = $fields.setZone(figure, mf.start_row, mf.start_col);
         }
         if(exceed.right_exceed){
             mf.start_col -= exceed.right_exceed;
-            zoneChanged = $fields.setZone(figure, mf.start_row, mf.start_col, $scope.board_width, $scope.board_height);
+            zoneChanged = $fields.setZone(figure, mf.start_row, mf.start_col);
         }
         if(exceed.bottom_exceed){
             mf.start_row += exceed.bottom_exceed;
-            zoneChanged = $fields.setZone(figure, mf.start_row, mf.start_col, $scope.board_width, $scope.board_height);
+            zoneChanged = $fields.setZone(figure, mf.start_row, mf.start_col);
         }
         $fields.fillZone(figure);
     };
