@@ -34,7 +34,7 @@ services.factory('BaseFigure', ['$filter', function($filter){
             return me.getPosition();
         };
 
-        me.getEmptyRows = function(){
+        me.getEmptyRowsFromAbove = function(){
             var position = me.getPosition();
             var empty_rows = 0;
             for (var i = 0; i < position.length; i++) {
@@ -52,8 +52,31 @@ services.factory('BaseFigure', ['$filter', function($filter){
             return empty_rows;
         };
 
+        me.getEmptyRowsFromBelow = function(){
+            var position = me.getPosition();
+            var empty_rows = 0;
+
+            for (var i = position.length - 1; i >= 0; i--) {
+                var row = position[i];
+                var filling_cells = row.filter(function(cell){
+                    return cell === 1;
+                });
+                if(filling_cells.length == 0){
+                    empty_rows++;
+                }
+                else{
+                    break;
+                }
+            }
+            return empty_rows;
+        };
+
         me.getPosition = function(){
             return positions[current_position_num];
+        };
+
+        me.getPositionCurrentNum = function(){
+            return current_position_num;
         };
 
         me.getPositions =  function(){

@@ -28,18 +28,24 @@ ctrls.controller('BoardCtrl', [
             var figure = $figures.getRandomFigure();
             figure.setPosition(null);
 
-            var empty_rows = figure.getEmptyRows();
+            var empty_rows = figure.getEmptyRowsFromAbove();
 
             var start_row = BORDER_WIDTH - empty_rows;
-            var start_col = $filter('randomNumber')(BORDER_WIDTH, $scope.board_width - BORDER_WIDTH - figure.getWidth());
+            var start_col = 6;
 
-            $fields.setZone(figure, start_row, start_col);
-            $fields.fillZone(figure);
-            $scope.movingFigure = {
-                start_row: start_row,
-                start_col: start_col,
-                figure: figure
-            };
+            var changedZone = $fields.setZone(figure, start_row, start_col);
+            if(changedZone){
+                $fields.fillZone(figure);
+                $scope.movingFigure = {
+                    start_row: start_row,
+                    start_col: start_col,
+                    figure: figure
+                };
+            }
+            else{
+                $fields.fillZone(figure);
+                alert('Game end!');
+            }
         };
 
         $scope.launch_new_game = function(){
@@ -75,7 +81,7 @@ ctrls.controller('BoardCtrl', [
                 (added) ? mf[coord_changed]-- : mf[coord_changed]++;
                 console.log('On mode: ' + mode + ' - board is end!!!');
                 if(mode == 'down'){
-                    $scope.addFigureForMove();
+                    endMovingFigure(figure);
                 }
             }
         };
@@ -83,22 +89,68 @@ ctrls.controller('BoardCtrl', [
         $scope.rotate = function(){
             var mf = $scope.movingFigure;
             var figure = mf.figure;
+            var saving = saveFigure();
+
             figure.setNextPosition();
-            $fields.clearZone();
+
             var exceed = $fields.getExceedCount();
             if(exceed.left_exceed){
                 mf.start_col += exceed.left_exceed;
-                var zoneChanged = $fields.setZone(figure, mf.start_row, mf.start_col);
             }
             if(exceed.right_exceed){
                 mf.start_col -= exceed.right_exceed;
-                zoneChanged = $fields.setZone(figure, mf.start_row, mf.start_col);
             }
             if(exceed.bottom_exceed){
                 mf.start_row += exceed.bottom_exceed;
-                zoneChanged = $fields.setZone(figure, mf.start_row, mf.start_col);
             }
-            $fields.fillZone(figure);
+
+            $fields.clearZone();
+
+
+            var zoneChanged = $fields.setZone(figure, mf.start_row, mf.start_col);
+            if(zoneChanged){    // can figure rotating?
+                $fields.fillZone(figure);
+            }
+            else{
+                // return previous position
+                figure.setPosition(saving.position_num);
+                mf.figure = figure;
+                mf.start_row = saving.start_row;
+                mf.start_col = saving.start_col;
+                $fields.setZone(figure, mf.start_row, mf.start_col);
+
+                // can figure Moving down?
+                var canMovingDown = false;
+                zoneChanged = $fields.setZone(figure, mf.start_row + 1, mf.start_col);
+                if(zoneChanged){
+                    canMovingDown = true;
+                }
+
+                // return previous position
+                $fields.setZone(figure, mf.start_row, saving.start_col);
+
+                $fields.fillZone(figure);
+                var empty_rows = figure.getEmptyRowsFromBelow(); // figure position has empty rows?
+                if(empty_rows == 0 && !canMovingDown){
+                    endMovingFigure(figure);
+                }
+            }
+        };
+
+        var saveFigure = function(){
+            var mf = $scope.movingFigure;
+            var figure = mf.figure;
+
+            return {
+                position_num: figure.getPositionCurrentNum(),
+                start_col: mf.start_col,
+                start_row: mf.start_row
+            }
+        };
+
+        var endMovingFigure = function(figure){
+            $fields.fillHeap(figure);
+            $scope.addFigureForMove();
         };
 
         $scope.getClassFor = function(cell){

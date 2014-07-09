@@ -83,12 +83,28 @@ describe('figures', function() {
             }
         });
 
-        it('check empty rows', function() {
+        it('check empty rows from above', function() {
             test_figure.setPosition(1);
-            expect(test_figure.getEmptyRows()).toEqual(1);
+            expect(test_figure.getEmptyRowsFromAbove()).toEqual(1);
 
             test_figure.setPosition(3);
-            expect(test_figure.getEmptyRows()).toEqual(2);
+            expect(test_figure.getEmptyRowsFromAbove()).toEqual(2);
+        });
+
+        it('check empty rows from below', function() {
+            test_figure.setPosition(1);
+            expect(test_figure.getEmptyRowsFromBelow()).toEqual(2);
+
+            test_figure.setPosition(3);
+            expect(test_figure.getEmptyRowsFromBelow()).toEqual(1);
+        });
+
+        it('getPositionCurrentNum', function() {
+            test_figure.setPosition(1);
+            expect(test_figure.getPositionCurrentNum()).toEqual(1);
+
+            test_figure.setPosition(3);
+            expect(test_figure.getPositionCurrentNum()).toEqual(3);
         });
 
     });

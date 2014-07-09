@@ -24,12 +24,14 @@ describe('fields', function() {
                         expect(_field.row).toEqual(i);
                         expect(_field.col).toEqual(j);
                         expect(_field.fill).toBeTruthy();
+                        expect(_field.heap).toBeFalsy();
                         expect(_field.type_figure).toEqual('border');
                     }
                     else{
                         expect(_field.row).toEqual(i);
                         expect(_field.col).toEqual(j);
                         expect(_field.fill).not.toBeTruthy();
+                        expect(_field.heap).toBeFalsy();
                         expect(_field.type_figure).toEqual('');
                     }
                 }
@@ -43,6 +45,20 @@ describe('fields', function() {
             var field = $fields.getFieldByCoord(row, col);
             expect(field.fill).toBeTruthy();
             expect(field.type_figure).toEqual('line');
+
+            row = 1; col = 1;
+            $fields.addFillToField(row, col, 'line');
+            field = $fields.getFieldByCoord(row, col);
+            expect(field.fill).toBeTruthy();
+            expect(field.type_figure).toEqual('border');
+
+            row = 3; col = 3;
+            $fields.addFieldToHeap(row, col);
+            $fields.addFillToField(row, col, 'line');
+            field = $fields.getFieldByCoord(row, col);
+            expect(field.fill).toBeFalsy();
+            expect(field.type_figure).toEqual('');
+            expect(field.heap).toBeTruthy();
         });
 
         it('removeFillFromField', function(){
@@ -56,10 +72,22 @@ describe('fields', function() {
 
             // in border of board
             row = 1; col = 1;
+            $fields.addFillToField(row, col, 'line');
             $fields.removeFillFromField(row, col);
             field = $fields.getFieldByCoord(row, col);
             expect(field.fill).toBeTruthy();
             expect(field.type_figure).toEqual('border');
+
+            // in border of board
+            row = 3; col = 3;
+            $fields.addFillToField(row, col, 'line');
+            $fields.addFieldToHeap(row, col);
+            $fields.removeFillFromField(row, col);
+            field = $fields.getFieldByCoord(row, col);
+
+            expect(field.fill).toBeTruthy();
+            expect(field.type_figure).toEqual('line');
+            expect(field.heap).toBeTruthy();
 
         });
 
@@ -112,6 +140,27 @@ describe('fields', function() {
             zoneChanged = $fields.setZone(Line, 3, 1);
             expect(zoneChanged).toBeTruthy();
             zoneChanged = $fields.setZone(Line, 3, 0);
+            expect(zoneChanged).toBeFalsy();
+            zoneChanged = $fields.setZone(Line, 3, 4);
+            expect(zoneChanged).toBeTruthy();
+            zoneChanged = $fields.setZone(Line, 3, 5);
+            expect(zoneChanged).toBeFalsy();
+
+            // check set zone to filling fields
+            $fields.addFillToField(2,2);    // filling field miss a figure
+            zoneChanged = $fields.setZone(Line, 2, 2);
+            expect(zoneChanged).toBeTruthy();
+            $fields.addFillToField(2,3); // filling field not miss a figure
+            zoneChanged = $fields.setZone(Line, 2, 2);
+            expect(zoneChanged).toBeFalsy();
+
+            // check set zone to heap
+            $fields.clearZone();
+            $fields.addFieldToHeap(2,2);    // heap miss a figure
+            zoneChanged = $fields.setZone(Line, 2, 2);
+            expect(zoneChanged).toBeTruthy();
+            $fields.addFieldToHeap(2,3); // heap not miss a figure
+            zoneChanged = $fields.setZone(Line, 2, 2);
             expect(zoneChanged).toBeFalsy();
 
         }));

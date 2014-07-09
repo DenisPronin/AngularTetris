@@ -37,6 +37,7 @@ services.factory('Fields', [
                     row: row,
                     col: col,
                     fill: (fill) ? fill : false,
+                    heap: false,
                     type_figure: (type_figure) ? type_figure : ''
                 };
                 if(!fields[row]){
@@ -51,17 +52,9 @@ services.factory('Fields', [
             }
         };
 
-        me.getRandomField = function(){
-            var count_rows = me.getRowsLength();
-            var count_cols = me.getColsLength();
-            var random_row = $filter('randomNumber')(BORDER_WIDTH, count_rows - BORDER_WIDTH - 1);
-            var random_col = $filter('randomNumber')(BORDER_WIDTH, count_cols - BORDER_WIDTH - 1);
-            return me.getFieldByCoord(random_row, random_col);
-        };
-
         me.addFillToField = function(row, col, type_figure){
             var _field = me.getFieldByCoord(row, col);
-            if(_field){
+            if(_field && !_field.heap && _field.type_figure != 'border'){
                 _field.fill = true;
                 _field.type_figure = type_figure;
             }
@@ -69,7 +62,7 @@ services.factory('Fields', [
 
         me.removeFillFromField = function(row, col){
             var _field = me.getFieldByCoord(row, col);
-            if(_field.type_figure != 'border'){
+            if(_field.type_figure != 'border' && !_field.heap){
                 _field.fill = false;
                 _field.type_figure = '';
             }
@@ -108,6 +101,7 @@ services.factory('Fields', [
             var width = figure.getWidth();
             var height = figure.getHeight();
             var upLimit = false;
+
             for (var i = 0; i < width; i++) {
                 var row = [];
                 if(start_row >= 0 && start_row + i  < board_height){
@@ -116,6 +110,10 @@ services.factory('Fields', [
                             var field = me.getFieldByCoord(start_row + i, start_col + j);
                             if(field){
                                 if(field.fill == true && position[i][j] == 1){
+                                    upLimit = true;
+                                    break;
+                                }
+                                else if(field.heap == true && position[i][j] == 1){
                                     upLimit = true;
                                     break;
                                 }
@@ -203,6 +201,25 @@ services.factory('Fields', [
                 }
             }
             return null;
+        };
+
+        me.fillHeap = function(figure){
+            var position = figure.getPosition();
+            for (var i = 0; i < position.length; i++) {
+                for (var j = 0; j < position[i].length; j++) {
+                    var coords = zone[i][j];
+                    if(coords && position[i][j] == 1){
+                        me.addFieldToHeap(coords.row, coords.col);
+                    }
+                }
+            }
+        };
+
+        me.addFieldToHeap = function(row, col){
+            var _field = me.getFieldByCoord(row, col);
+            if(_field){
+                _field.heap = true;
+            }
         };
 
         return me;
