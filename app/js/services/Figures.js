@@ -1,22 +1,32 @@
 'use strict';
 
-services.factory('Figures', ['$filter', 'L_Left', 'L_Right', 'Line', 'Square', 'L_Zigzag', 'R_Zigzag', 'Ship', function($filter, $l_left, $l_right, $line, $square, $l_zigzag, $r_zigzag, $ship){
-    var me = this;
+services.factory('Figures', [
+    '$filter',
+    'L_Left',
+    'L_Right',
+    'Line',
+    'Square',
+    'L_Zigzag',
+    'R_Zigzag',
+    'Ship',
+    function($filter, $l_left, $l_right, $line, $square, $l_zigzag, $r_zigzag, $ship){
+        var me = this;
 
-    var figures = [];
-    figures.push($l_left, $l_right, $line, $square, $l_zigzag, $r_zigzag, $ship);
+        var figures = [];
+        figures.push($l_left, $l_right, $line, $square, $l_zigzag, $r_zigzag, $ship);
 
-    me.getFigures = function(){
-        return figures;
-    };
+        me.getFigures = function(){
+            return figures;
+        };
 
-    me.getRandomFigure = function(){
-        var _random = $filter('randomNumber')(0, figures.length - 1);
-        return (figures[_random]) ? figures[_random]: null;
-    };
+        me.getRandomFigure = function(){
+            var _random = $filter('randomNumber')(0, figures.length - 1);
+            return (figures[_random]) ? figures[_random]: null;
+        };
 
-    return me;
-}]);
+        return me;
+    }
+]);
 
 services.factory('L_Left', ['BaseFigure', function($baseFigure){
     var name = 'l_left';
