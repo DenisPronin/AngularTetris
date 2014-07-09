@@ -23,8 +23,31 @@
 
     <div data-ng-controller="ChoreCtrl">
         <kid done="logChore(chore)"></kid>
+        ctrl
         <input type="text" ng-model="ctrlFlavor"/>
-        <div drink flavor="{{ ctrlFlavor }}"></div>
+        dir
+        <div drink flavor="ctrlFlavor"></div>
+
+        <div>
+            <phone dial="callPhone(message)"></phone>
+        </div>
+        <div>
+            <phone dial="callPhone(message)"></phone>
+        </div>
+        <br/>
+        <div>
+            <phone2 number="555-1234" network="network" make-call="leaveVoicemail(number, message)"></phone2>
+            <phone2 number="867-5309" network="network" make-call="leaveVoicemail(number, message)"></phone2>
+            <phone2 number="911" network="network" make-call="leaveVoicemail(number, message)"></phone2>
+        </div>
+
+        <div>
+            <div>Transclude example</div>
+            <panel>
+                <input type="button" value="Click!"/>
+            </panel>
+
+        </div>
     </div>
 
     <!--

@@ -27,4 +27,13 @@ ctrls.controller('ChoreCtrl', ['$scope', function($scope){
     };
 
     $scope.ctrlFlavor = 'blackberry';
+
+    $scope.callPhone = function(message){
+        alert(message)
+    };
+
+    $scope.leaveVoicemail = function(number, message) {
+        alert("Number: " + number + " said: " + message)
+    }
+
 }]);

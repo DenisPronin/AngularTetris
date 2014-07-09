@@ -97,11 +97,53 @@ directives.directive('drink', function(){
     return {
         restrict: 'A',
         scope: {
-            flavor: '@'
+            flavor: '='
         },
-        template: '<div>{{ flavor }}</div>'
+        template: '<input type="text" ng-model="flavor">'
 //        link: function (scope, element, attrs){
 //            scope.flavor = attrs.flavor;
 //        }
+    }
+});
+
+directives.directive('phone', function(){
+    return{
+        restrict: 'E',
+        scope: {
+            dial: '&'
+        },
+        template: '<input type="text" ng-model="value"/>' +
+            '<input type="button" ng-click="dial({message: value})" value="Call"/>'
+
+    }
+});
+
+directives.directive("phone2", function() {
+    return {
+        restrict: "E",
+        scope: {
+            number: "@",
+            network: "=",
+            makeCall: "&"
+        },
+        template: '<div class="panel">Number: <input type="text" ng-model="number"/> Network:' +
+            '<select ng-model="network" ng-options="net for net in networks">' +
+            '<input type="text" ng-model="value">' +
+            '<input type="button" ng-click="makeCall({number: number, message: value})" value="Call home!"/></div>',
+
+        link: function(scope) {
+            scope.networks = ["Verizon", "AT&T", "Sprint"];
+            scope.network = scope.networks[0]
+        }
+    }
+});
+
+directives.directive('panel', function(){
+    return {
+        restrict: 'E',
+        transclude: true,
+        template: '<div class="panel">this is panel' +
+            '<div ng-transclude=""></div>' +
+            '</div>'
     }
 });
