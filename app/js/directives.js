@@ -37,3 +37,14 @@ directives.directive('gameControls', function(){
         }
     }
 });
+
+
+directives.directive('score', function(){
+    return {
+        restrict: 'A',
+        scope: {
+            score: '@'
+        },
+        templateUrl: 'partials/score.html'
+    }
+});

@@ -13,10 +13,14 @@ ctrls.controller('BoardCtrl', [
     function($scope, $filter, $interval, $fields, $figures) {
         $scope.rows = null;
         $scope.gameOver = false;
+        $scope.score = 0;
 
         var board_width = 14;
         var board_height = 24;
         var BORDER_WIDTH = 2;
+        var speed = 500;
+        var fallen_speed = 50;
+        var cost_line = 50;
 
         var initBoard = function(){
             $fields.initBoard(board_height, board_width, BORDER_WIDTH);
@@ -45,23 +49,27 @@ ctrls.controller('BoardCtrl', [
                         figure: figure
                     };
 
-                    $scope.movingFigure.process = $interval($scope.moveDown, 500);
+                    $scope.movingFigure.process = $interval($scope.moveDown, speed);
                 }
                 else{
-                    if(start_row > 0){
-                        endProcess();
-                        // show only part of figure which can entering on board
-                        for (var i = start_row-1; i >= 0; i--) {
-                            var hasEndZone = $fields.setZone(figure, i, start_col, true);
-                            if(hasEndZone){
-                                $fields.fillZone(figure);
-                            }
-                        }
-                    }
-                    $scope.gameOver = true;
-                    console.log('Game end!');
+                    endGame(figure, start_row, start_col);
                 }
             }
+        };
+
+        var endGame = function(figure, start_row, start_col){
+            if(start_row > 0){
+                endProcess();
+                // show only part of figure which can entering on board
+                for (var i = start_row-1; i >= 0; i--) {
+                    var hasEndZone = $fields.setZone(figure, i, start_col, true);
+                    if(hasEndZone){
+                        $fields.fillZone(figure);
+                    }
+                }
+            }
+            $scope.gameOver = true;
+            alert('Game end!');
         };
 
         $scope.launch_new_game = function(){
@@ -86,7 +94,7 @@ ctrls.controller('BoardCtrl', [
 
         $scope.moveFallDown = function(){
             endProcess();
-            $scope.movingFigure.process = $interval($scope.moveDown, 50);
+            $scope.movingFigure.process = $interval($scope.moveDown, fallen_speed);
             move('start_row', true, 'down');
         };
 
@@ -180,13 +188,19 @@ ctrls.controller('BoardCtrl', [
             endProcess();
             $fields.fillHeap(figure);
 
-            $fields.removeFullRows();
+            editScore();
 
+            $fields.removeFullRows();
             $scope.addFigureForMove();
         };
 
         $scope.getClassFor = function(cell){
             return  'cell_' + cell.row + '_' + cell.col + ' block_' + cell.type_figure;
+        };
+
+        var editScore = function(){
+            var full_rows_nums = $fields.checkFullLines();
+            $scope.score += full_rows_nums.length * cost_line;
         };
 
         var endProcess = function(){
