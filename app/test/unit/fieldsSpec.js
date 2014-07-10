@@ -172,10 +172,10 @@ describe('fields', function() {
 
             var zone = $fields.getZone();
             var position = Line.getPosition();
-            parseZone(zone, position, true);
+            parseZone(zone, position, true, false);
 
             $fields.clearZone();
-            parseZone(zone, position, false);
+            parseZone(zone, position, false, false);
 
         }));
 
@@ -231,20 +231,34 @@ describe('fields', function() {
 
         }));
 
-        function parseZone(zone, position, fillMode){
+        it('fillHeap', inject(function(Line){
+            Line.setPosition(1);
+            var zoneChanged = $fields.setZone(Line, 2, 2);
+            $fields.fillZone(Line);
+            $fields.fillHeap(Line);
+            parseZone($fields.getZone(), Line.getPosition(), false, true);
+        }));
+
+        function parseZone(zone, position, fillMode, heapMode){
             for (var i = 0; i < zone.length; i++) {
                 var row = zone[i];
                 for (var j = 0; j < row.length; j++) {
                     var cell = row[j];
                     var _field = $fields.getFieldByCoord(cell.row, cell.col);
                     var fill = (_field.fill) ? 1 : 0;
-                    if(fillMode){
-                        expect(fill).toEqual(position[i][j]);
+                    if(!heapMode){
+                        if(fillMode){
+                            expect(fill).toEqual(position[i][j]);
+                        }
+                        else{
+                            expect(fill).toEqual(0);
+                        }
                     }
                     else{
-                        expect(fill).toEqual(0);
-
+                        var heap = (_field.heap) ? 1 : 0;
+                        expect(fill).toEqual(position[i][j]);
                     }
+
                 }
             }
 
