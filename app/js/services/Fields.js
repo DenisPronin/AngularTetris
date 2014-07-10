@@ -1,9 +1,8 @@
 'use strict';
 
 services.factory('Fields', [
-    '$filter',
     'Figures',
-    function($filter, $figures){
+    function($figures){
         var me = this;
         var fields = [];
         var zone = [];
@@ -101,7 +100,7 @@ services.factory('Fields', [
         };
 
         // operations with figures
-        me.setZone = function(figure, start_row, start_col){
+        me.setZone = function(figure, start_row, start_col, endMode){
             var _zone = [];
             var position = figure.getPosition();
             var width = figure.getWidth();
@@ -115,7 +114,7 @@ services.factory('Fields', [
                         if(start_col >= 0 && start_col + j < board_width){
                             var field = me.getFieldByCoord(start_row + i, start_col + j);
                             if(field){
-                                if(field.fill == true && position[i][j] == 1){
+                                if(!endMode && field.fill == true && position[i][j] == 1){
                                     upLimit = true;
                                     break;
                                 }
@@ -178,11 +177,10 @@ services.factory('Fields', [
 
         me.getExceedCount = function(){
             var border_width = 2;
-            var left_exceed = 0, right_exceed = 0, bottom_exceed = 0, top_exceed = 0;
+            var left_exceed = 0, right_exceed = 0, bottom_exceed = 0;
             if(zone.length > 0){
                 var first_row = zone[0];
                 var first_cell = first_row[0];
-                var isTopExceed = true;
 
                 zone.filter(function(_row){
                     if(_row[0].row < border_width){
@@ -272,6 +270,17 @@ services.factory('Fields', [
                 });
             }
 
+        };
+
+        me.removeFullRows = function(){
+            var full_rows_nums = me.checkFullLines();
+            if(full_rows_nums.length > 0){
+                var _num = full_rows_nums[0];
+                var heap_row = me.getRowByNum(_num);
+                me.removeRowFromHeap(heap_row);
+                me.moveHeapDown(_num);
+                me.removeFullRows();
+            }
         };
 
         return me;

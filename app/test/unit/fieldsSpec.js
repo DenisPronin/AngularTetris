@@ -327,6 +327,19 @@ describe('fields', function() {
 
         }));
 
+        it('removeRowFromHeap', inject(function(Line){
+            for (var i = 1; i < 3; i++) {
+                var row_num = board_height - BORDER_WIDTH - i;
+                var row = $fields.getRowByNum(row_num);
+                _.map(row, function(cell){
+                    $fields.addFieldToHeap(cell.row, cell.col);
+                });
+            }
+            $fields.removeFullRows();
+            var full_lines = $fields.checkFullLines();
+            expect(full_lines.length).toEqual(0);
+        }));
+
         function parseZone(zone, position, fillMode, heapMode){
             for (var i = 0; i < zone.length; i++) {
                 var row = zone[i];
