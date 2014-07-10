@@ -45,10 +45,11 @@ ctrls.controller('BoardCtrl', [
                         figure: figure
                     };
 
-                    $scope.movingFigure.process = $interval($scope.moveDown, 1000);
+                    $scope.movingFigure.process = $interval($scope.moveDown, 500);
                 }
                 else{
                     if(start_row > 0){
+                        endProcess();
                         // show only part of figure which can entering on board
                         for (var i = start_row-1; i >= 0; i--) {
                             var hasEndZone = $fields.setZone(figure, i, start_col, true);
@@ -64,6 +65,7 @@ ctrls.controller('BoardCtrl', [
         };
 
         $scope.launch_new_game = function(){
+            endProcess();
             $scope.gameOver = false;
             initBoard();
             $fields.clearFields();
@@ -79,6 +81,12 @@ ctrls.controller('BoardCtrl', [
         };
 
         $scope.moveDown = function(){
+            move('start_row', true, 'down');
+        };
+
+        $scope.moveFallDown = function(){
+            endProcess();
+            $scope.movingFigure.process = $interval($scope.moveDown, 50);
             move('start_row', true, 'down');
         };
 
@@ -169,7 +177,7 @@ ctrls.controller('BoardCtrl', [
         };
 
         var endMovingFigure = function(figure){
-            $interval.cancel($scope.movingFigure.process);
+            endProcess();
             $fields.fillHeap(figure);
 
             $fields.removeFullRows();
@@ -181,6 +189,9 @@ ctrls.controller('BoardCtrl', [
             return  'cell_' + cell.row + '_' + cell.col + ' block_' + cell.type_figure;
         };
 
+        var endProcess = function(){
+            $interval.cancel($scope.movingFigure.process);
+        };
     }
 ]);
 
