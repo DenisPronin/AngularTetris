@@ -7,9 +7,10 @@ var ctrls = angular.module('AppTetris.controllers', []);
 ctrls.controller('BoardCtrl', [
     '$scope',
     '$filter',
+    '$interval',
     'Fields',
     'Figures',
-    function($scope, $filter, $fields, $figures) {
+    function($scope, $filter, $interval, $fields, $figures) {
         $scope.rows = null;
         $scope.gameOver = false;
 
@@ -43,6 +44,8 @@ ctrls.controller('BoardCtrl', [
                         start_col: start_col,
                         figure: figure
                     };
+
+                    $scope.movingFigure.process = $interval($scope.moveDown, 1000);
                 }
                 else{
                     if(start_row > 0){
@@ -166,6 +169,7 @@ ctrls.controller('BoardCtrl', [
         };
 
         var endMovingFigure = function(figure){
+            $interval.cancel($scope.movingFigure.process);
             $fields.fillHeap(figure);
 
             $fields.removeFullRows();
