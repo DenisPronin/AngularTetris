@@ -5,6 +5,7 @@
 describe('figures', function() {
 
     beforeEach(module('AppTetris.services'));
+    beforeEach(module('AppTetris.filters'));
 
     describe('Check base figures parameters', function() {
         var name = 'test_name';
@@ -83,6 +84,19 @@ describe('figures', function() {
             }
         });
 
+        it('setPosition', function() {
+            test_figure.setPosition(null);
+            expect(test_figure.getPosition()).not.toBeUndefined();
+
+            test_figure.setPosition(3);
+            expect(test_figure.getPositionCurrentNum()).toEqual(3);
+        });
+
+        it('getPositions', function() {
+            var pos = test_figure.getPositions();
+            expect(pos).not.toBeUndefined();
+        });
+
         it('check empty rows from above', function() {
             test_figure.setPosition(1);
             expect(test_figure.getEmptyRowsFromAbove()).toEqual(1);
@@ -110,11 +124,14 @@ describe('figures', function() {
     });
 
     describe('Check initializing figures parameters', function(){
+        var _Figures;
         var figures;
         beforeEach(function(){
             inject(function(_Figures_) {
+                _Figures = _Figures_;
                 figures = _Figures_.getFigures();
             });
+
         });
 
         it('check figures Params', function() {
@@ -134,6 +151,15 @@ describe('figures', function() {
 
             }
         });
+
+        it('getRandomFigure', inject(function($filter) {
+            var figure = _Figures.getRandomFigure();
+            expect(figure.getName()).not.toEqual('');
+            expect(figure.getWidth()).not.toEqual(0);
+            expect(figure.getHeight()).not.toEqual(0);
+            expect(figure.getPosition()).not.toEqual([]);
+
+        }));
 
     });
 });

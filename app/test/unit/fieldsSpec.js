@@ -37,7 +37,18 @@ describe('fields', function() {
                 }
             }
 
+            var res = $fields.addField(2, 2, false, '');
+            expect(res).toBeFalsy();
+
         });
+
+        it('getRowsLength', inject(function(Line){
+            expect($fields.getRowsLength()).toEqual(board_height);
+        }));
+
+        it('getColsLength', inject(function(Line){
+            expect($fields.getColsLength()).toEqual(board_width);
+        }));
 
         it('addFillToField', function(){
             var row = 5, col = 5;
@@ -128,6 +139,16 @@ describe('fields', function() {
             zoneChanged = $fields.setZone(Line, 3, 3);  // right exceed
             expect(zoneChanged).toBeFalsy();
             zoneChanged = $fields.setZone(Line, 3, 1); // left exceed
+            expect(zoneChanged).toBeFalsy();
+
+            // zone in border
+            zoneChanged = $fields.setZone(Line, -1, 3);
+            expect(zoneChanged).toBeFalsy();
+            zoneChanged = $fields.setZone(Line, board_height + 1, 3);
+            expect(zoneChanged).toBeFalsy();
+            zoneChanged = $fields.setZone(Line, 2, -1);
+            expect(zoneChanged).toBeFalsy();
+            zoneChanged = $fields.setZone(Line, 2, board_width+1);
             expect(zoneChanged).toBeFalsy();
 
             Line.setPosition(2);
@@ -248,6 +269,62 @@ describe('fields', function() {
             expect(_f.heap).toBeTruthy();
             $fields.removeHeapFromField(3, 2);
             expect(_f.heap).toBeFalsy();
+        }));
+
+        it('getRowByNum', inject(function(Line){
+            var row_num = board_height - BORDER_WIDTH - 1;
+            var row = $fields.getRowByNum(row_num);
+            expect(row[0].row).toEqual(row_num);
+        }));
+
+        it('checkFullLines', inject(function(Line){
+            var row_num = board_height - BORDER_WIDTH - 1;
+            var row = $fields.getRowByNum(row_num);
+
+            _.map(row, function(cell){
+                $fields.addFieldToHeap(cell.row, cell.col);
+            });
+
+            var full_rows = $fields.checkFullLines();
+
+            expect(full_rows[0]).toEqual(row_num);
+        }));
+
+        it('removeRowFromHeap', inject(function(Line){
+            var row_num = board_height - BORDER_WIDTH - 1;
+            var row = $fields.getRowByNum(row_num);
+
+            _.map(row, function(cell){
+                $fields.addFieldToHeap(cell.row, cell.col);
+            });
+
+            $fields.removeRowFromHeap(row);
+
+            _.map(row, function(cell){
+                expect(cell.heap).toBeFalsy();
+            });
+        }));
+
+        it('moveHeapDown', inject(function(Line){
+            var row_num = board_height - BORDER_WIDTH - 1;
+            var row = $fields.getRowByNum(row_num);
+
+            _.map(row, function(cell){
+                $fields.addFieldToHeap(cell.row, cell.col);
+            });
+
+            $fields.addFillToField(row_num - 1, 4, 'line');
+            $fields.addFieldToHeap(row_num - 1, 4);
+
+            $fields.removeRowFromHeap(row);
+            $fields.moveHeapDown(row_num);
+
+            var fieldByCoord = $fields.getFieldByCoord(row_num, 4);
+
+            expect(fieldByCoord.heap).toBeTruthy();
+            expect(fieldByCoord.fill).toBeTruthy();
+            expect(fieldByCoord.type_figure).toEqual('line');
+
         }));
 
         function parseZone(zone, position, fillMode, heapMode){

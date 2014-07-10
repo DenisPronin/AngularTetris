@@ -48,8 +48,10 @@ services.factory('Fields', [
                 }
                 else{
                     console.log('Field already exists!');
+                    return false;
                 }
             }
+            return true;
         };
 
         me.addFillToField = function(row, col, type_figure){
@@ -221,7 +223,7 @@ services.factory('Fields', [
 
         me.addFieldToHeap = function(row, col){
             var _field = me.getFieldByCoord(row, col);
-            if(_field){
+            if(_field && _field.type_figure != 'border'){
                 _field.heap = true;
             }
         };
