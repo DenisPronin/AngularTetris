@@ -150,7 +150,21 @@ ctrls.controller('BoardCtrl', [
 
         var endMovingFigure = function(figure){
             $fields.fillHeap(figure);
+
+            removeFullRows();
+
             $scope.addFigureForMove();
+        };
+
+        var removeFullRows = function(){
+            var full_rows_nums = $fields.checkFullLines();
+            if(full_rows_nums.length > 0){
+                var _num = full_rows_nums[0];
+                var heap_row = $fields.getRowByNum(_num);
+                $fields.removeRowFromHeap(heap_row);
+                $fields.moveHeapDown(_num);
+                removeFullRows();
+            }
         };
 
         $scope.getClassFor = function(cell){

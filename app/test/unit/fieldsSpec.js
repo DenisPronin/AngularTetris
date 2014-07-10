@@ -180,10 +180,13 @@ describe('fields', function() {
         }));
 
         it('getExceedCount', inject(function(Line){
+            var exceed = $fields.getExceedCount();
+            expect(exceed).toBeNull();
+
             Line.setPosition(0);
             // normal
             $fields.setZone(Line, 2, 2);
-            var exceed = $fields.getExceedCount();
+            exceed = $fields.getExceedCount();
             expect(exceed.left_exceed).toEqual(0);
             expect(exceed.right_exceed).toEqual(0);
             expect(exceed.bottom_exceed).toEqual(0);
@@ -237,6 +240,14 @@ describe('fields', function() {
             $fields.fillZone(Line);
             $fields.fillHeap(Line);
             parseZone($fields.getZone(), Line.getPosition(), false, true);
+        }));
+
+        it('removeHeapFromField', inject(function(Line){
+            var _f = $fields.getFieldByCoord(3, 2);
+            $fields.addFieldToHeap(3, 2);
+            expect(_f.heap).toBeTruthy();
+            $fields.removeHeapFromField(3, 2);
+            expect(_f.heap).toBeFalsy();
         }));
 
         function parseZone(zone, position, fillMode, heapMode){

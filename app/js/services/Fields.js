@@ -77,6 +77,10 @@ services.factory('Fields', [
             }
         };
 
+        me.getRowByNum = function(row){
+            return fields[row];
+        };
+
         me.getFieldByCoord = function(row, col){
             return fields[row][col];
         };
@@ -220,6 +224,52 @@ services.factory('Fields', [
             if(_field){
                 _field.heap = true;
             }
+        };
+
+        me.removeHeapFromField = function(row, col){
+            var field = me.getFieldByCoord(row, col);
+            if(field){
+                field.heap = false;
+            }
+        };
+
+        me.checkFullLines = function(){
+            var full_rows_nums = [];
+            for (var i = fields.length - BORDER_WIDTH - 1; i >= BORDER_WIDTH; i--) {
+                var row = fields[i];
+                var cells_in_heap = row.filter(function(cell){
+                    return cell.heap == true;
+                });
+                if(cells_in_heap.length == row.length - BORDER_WIDTH*2){
+                    full_rows_nums.push(i);
+                }
+            }
+            return full_rows_nums;
+        };
+
+        me.removeRowFromHeap = function(row){
+            _.map(row, function(cell){
+                me.removeHeapFromField(cell.row, cell.col);
+                me.removeFillFromField(cell.row, cell.col);
+            })
+        };
+
+        me.moveHeapDown = function(start_row_num){
+            for (var i = start_row_num - 1; i >= BORDER_WIDTH; i--) {
+                var row = fields[i];
+                _.map(row, function(cell){
+                    if(cell.heap){
+                        var belowField = me.getFieldByCoord(cell.row + 1, cell.col);
+
+                        me.addFillToField(belowField.row, belowField.col, cell.type_figure);
+                        me.removeHeapFromField(cell.row, cell.col);
+                        me.removeFillFromField(cell.row, cell.col);
+                        me.addFieldToHeap(belowField.row, belowField.col);
+
+                    }
+                });
+            }
+
         };
 
         return me;
