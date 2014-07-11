@@ -66,6 +66,8 @@ describe('directives', function() {
 
 /*
     describe('Score Directive', function() {
+        var $httpBackend;
+        beforeEach(module('partials'));
         beforeEach(function () {
             inject(function ($compile, $rootScope, $controller, _Fields_, _Figures_){
                 $scope = $rootScope.$new();
@@ -76,8 +78,7 @@ describe('directives', function() {
             });
         });
 
-        it('Right event', function() {
-            spyOn($scope, "moveRight");
+        it('Score', function() {
             expect($scope.score).toEqual(0);
         });
 
