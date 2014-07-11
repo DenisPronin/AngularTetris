@@ -6,11 +6,10 @@ var ctrls = angular.module('AppTetris.controllers', []);
 
 ctrls.controller('BoardCtrl', [
     '$scope',
-    '$filter',
     '$interval',
     'Fields',
     'Figures',
-    function($scope, $filter, $interval, $fields, $figures) {
+    function($scope, $interval, $fields, $figures) {
         $scope.rows = null;
         $scope.gameOver = false;
         $scope.score = 0;
@@ -101,6 +100,8 @@ ctrls.controller('BoardCtrl', [
         var move = function(coord_changed, added, mode){
             if(!$scope.gameOver){
                 var mf = $scope.movingFigure;
+                if($.isEmptyObject(mf)) return null;
+
                 var figure = mf.figure;
 
                 (added) ? mf[coord_changed]++ : mf[coord_changed]--;
@@ -118,11 +119,13 @@ ctrls.controller('BoardCtrl', [
                     }
                 }
             }
+            return null;
         };
 
         $scope.rotate = function(){
             if(!$scope.gameOver){
                 var mf = $scope.movingFigure;
+                if($.isEmptyObject(mf)) return null;
                 var figure = mf.figure;
                 var saving = saveFigure();
 
@@ -171,6 +174,7 @@ ctrls.controller('BoardCtrl', [
                     }
                 }
             }
+            return null;
         };
 
         var saveFigure = function(){
