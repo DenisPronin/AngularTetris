@@ -1,46 +1,80 @@
 .game_area{
     border-collapse: collapse;
+    margin: 15px;
 }
 
 .game_area td{
     width: 20px;
     height: 20px;
-    border: 1px solid #000000;
+    border: 1px solid transparent;
 }
 
 #gameContainer, #nextFigure{
     padding: 15px;
 }
 
+.controls a{
+    background-color: #1251A0;
+    border-color: #096EEC;
+}
+
+.game_area tr:nth-child(odd) td:nth-child(even){
+    background-color: #5887a0;
+}
+
+.game_area tr:nth-child(odd) td:nth-child(odd){
+    background-color: #526ba0;
+}
+
+.game_area tr:nth-child(even) td:nth-child(odd) {
+    background-color: #5887a0;
+}
+
+.game_area tr:nth-child(even) td:nth-child(even) {
+    background-color: #526ba0;
+}
+
+.figure{
+}
+
 .block_border{
-    background-color: #000;
+    background-color: #1251a0!important;
+    width: 2px!important;
+    height: 2px!important;
 }
 
 .block_line{
-    background-color: #0FF;
+    background-color: #08D3FF!important;
+    box-shadow: inset 0 0 1px 1px #008BA8;
 }
 
 .block_l_left{
-    background-color: #F0F;
+    background-color: #FF59FF!important;
+    box-shadow: inset 0 0 1px 1px #D100D1;
 }
 
 .block_l_right{
-    background-color: #FF0;
+    background-color: #FF0!important;
+    box-shadow: inset 0 0 1px 1px #B2B300;
 }
 
 .block_square{
-    background-color: #0F0;
+    background-color: #3BDF3B!important;
+    box-shadow: inset 0 0 1px 1px #00A300;
 }
 
 .block_l_zigzag{
-    background-color: #F00;
+    background-color: #D80448!important;
+    box-shadow: inset 0 0 1px 1px #FF96C4;
 }
 
 .block_r_zigzag{
-    background-color: #00F;
+    background-color: #0054D1!important;
+    box-shadow: inset 0 0 1px 1px #6EA2FF;
 }
 
 .block_ship{
-    background-color: #ffa1f2;
+    background-color: #FFA1F2!important;
+    box-shadow: inset 0 0 1px 1px #FF4FE7;
 }
 

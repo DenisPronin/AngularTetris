@@ -6,9 +6,9 @@ ctrls.controller('NextFigureBoardCtrl', [
         var Fields = new $fields();
         $scope.rows = null;
 
-        var board_width = 4;
-        var board_height = 4;
-        var BORDER_WIDTH = 0;
+        var board_width = 8;
+        var board_height = 8;
+        var BORDER_WIDTH = 2;
 
         var initBoard = function(){
             Fields.initBoard(board_height, board_width, BORDER_WIDTH);
@@ -17,8 +17,8 @@ ctrls.controller('NextFigureBoardCtrl', [
 
         $scope.addFigure = function(){
             var figure = getFigure();
-            var start_row = 0;
-            var start_col = 0;
+            var start_row = 2;
+            var start_col = 2;
             Fields.clearZone();
             var changedZone = Fields.setZone(figure, start_row, start_col);
             if(changedZone){

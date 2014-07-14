@@ -1,7 +1,9 @@
 <div id="gameContainer" data-game-controls data-ng-controller="BoardCtrl" class="pull-left">
     <board></board>
     <div class="controls">
-        <input type="button" class="pull-left" value="New Game" ng-click="launch_new_game()"/>
+        <a href="javascript:void(0)" class="btn btn-info glyphicon glyphicon-play" ng-click="launch_new_game()"></a>
+        <a href="javascript:void(0)" class="btn btn-info glyphicon glyphicon-pause" ng-click="launch_new_game()"></a>
+        <a href="javascript:void(0)" class="btn btn-info glyphicon glyphicon-repeat" ng-click="launch_new_game()"></a>
     </div>
     <div score="{{ score }}"></div>
 </div>
