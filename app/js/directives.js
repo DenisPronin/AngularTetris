@@ -39,6 +39,13 @@ directives.directive('gameControls', function(){
 });
 
 
+directives.directive('board', function(){
+    return {
+        restrict: 'E',
+        templateUrl: 'partials/board.html'
+    }
+});
+
 directives.directive('score', function(){
     return {
         restrict: 'A',

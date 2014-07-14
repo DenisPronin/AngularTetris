@@ -1,10 +1,5 @@
 <div id="gameContainer" data-game-controls data-ng-controller="BoardCtrl" class="pull-left">
-    <table class="game_area">
-        <tr ng-repeat="row in rows">
-            <td ng-repeat="cell in row" ng-class="getClassFor(cell)" class="board_cell">
-            </td>
-        </tr>
-    </table>
+    <board></board>
     <div class="controls">
         <input type="button" class="pull-left" value="New Game" ng-click="launch_new_game()"/>
     </div>
@@ -12,10 +7,5 @@
 </div>
 
 <div id="nextFigure" class="pull-left" data-ng-controller="NextFigureBoardCtrl">
-    <table class="game_area">
-        <tr ng-repeat="row in rows">
-            <td ng-repeat="cell in row" ng-class="getClassFor(cell)" class="board_cell">
-            </td>
-        </tr>
-    </table>
+    <board></board>
 </div>

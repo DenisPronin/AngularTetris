@@ -84,12 +84,4 @@ describe('Board', function() {
         $scope.rotate();
     });
 
-    it('getClassFor', function() {
-        var _f = $fields.getFieldByCoord(2,2);
-        var _class = $scope.getClassFor(_f);
-        expect('cell_2_2 block_' + _f.type_figure).toEqual(_class);
-    });
-
-
-
 });

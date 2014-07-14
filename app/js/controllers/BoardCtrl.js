@@ -197,10 +197,6 @@ ctrls.controller('BoardCtrl', [
             $scope.addFigureForMove();
         };
 
-        $scope.getClassFor = function(cell){
-            return  'cell_' + cell.row + '_' + cell.col + ' block_' + cell.type_figure;
-        };
-
         var editScore = function(){
             var full_rows_nums = Fields.checkFullLines();
             $scope.score += full_rows_nums.length * cost_line;

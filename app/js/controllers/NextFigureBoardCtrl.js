@@ -37,9 +37,5 @@ ctrls.controller('NextFigureBoardCtrl', [
             return $figures.getFigureFromQueue(1);
         };
 
-        $scope.getClassFor = function(cell){
-            return  'cell_' + cell.row + '_' + cell.col + ' block_' + cell.type_figure;
-        };
-
     }
 ]);

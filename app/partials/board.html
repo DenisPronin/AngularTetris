@@ -1,0 +1,7 @@
+<table class="game_area">
+    <tr ng-repeat="row in rows">
+        <td ng-repeat="cell in row"
+            class="board_cell block_{{cell.type_figure}} cell_{{ cell.row }}_{{ cell.col }}">
+        </td>
+    </tr>
+</table>
