@@ -8,6 +8,7 @@ services.factory('Fields', [
             var me = this;
             var fields = [];
             var zone = [];
+            var shadow_zone = [];
 
             var board_height, board_width, BORDER_WIDTH;
 
@@ -58,8 +59,8 @@ services.factory('Fields', [
             me.addFillToField = function(row, col, type_figure){
                 var _field = me.getFieldByCoord(row, col);
                 if(_field && !_field.heap && _field.type_figure != 'border'){
-                    _field.fill = true;
                     _field.type_figure = type_figure;
+                    _field.fill = _field.type_figure != 'shadow';
                 }
             };
 
@@ -102,7 +103,7 @@ services.factory('Fields', [
             };
 
             // operations with figures
-            me.setZone = function(figure, start_row, start_col, endMode){
+            me.setZone = function(figure, start_row, start_col, endMode, shadowMode){
                 var _zone = [];
                 var position = figure.getPosition();
                 var width = figure.getWidth();
@@ -142,17 +143,26 @@ services.factory('Fields', [
                     }
                 }
                 if(!upLimit){
-                    zone = _zone;
+                    if(shadowMode){
+                        shadow_zone = _zone;
+                    }
+                    else{
+                        zone = _zone;
+                    }
                     return true;
                 }
                 else return false;
             };
 
-            me.clearZone = function(){
-                for (var i = 0; i < zone.length; i++) {
-                    var row = zone[i];
+            me.clearZone = function(shadowMode){
+                var _zone = zone;
+                if(shadowMode){
+                    _zone = shadow_zone;
+                }
+                for (var i = 0; i < _zone.length; i++) {
+                    var row = _zone[i];
                     for (var j = 0; j < row.length; j++) {
-                        var coords = zone[i][j];
+                        var coords = _zone[i][j];
                         if(coords){
                             me.removeFillFromField(coords.row, coords.col);
                         }
@@ -160,12 +170,13 @@ services.factory('Fields', [
                 }
             };
 
-            me.fillZone = function(figure){
+            me.fillZone = function(figure, shadowMode){
+                var _zone = (shadowMode) ? shadow_zone : zone;
                 var position = figure.getPosition();
-                var name = figure.getName();
+                var name = (!shadowMode) ? figure.getName() : 'shadow';
                 for (var i = 0; i < position.length; i++) {
                     for (var j = 0; j < position[i].length; j++) {
-                        var coords = zone[i][j];
+                        var coords = _zone[i][j];
                         if(coords && position[i][j]){
                             me.addFillToField(coords.row, coords.col, name);
                         }
@@ -283,6 +294,35 @@ services.factory('Fields', [
                     me.moveHeapDown(_num);
                     me.removeFullRows();
                 }
+            };
+
+            me.setShadowZone = function(figure, start_row, start_col){
+                var zoneChanged = me.setZone(figure, start_row, start_col, false, true);
+                if(zoneChanged){
+                    me.setShadowZone(figure, start_row + 1, start_col);
+                }
+                else{
+                    console.log('Shadow is coming!');
+                    me.clearShadowZone();
+                    me.fillZone(figure, true);
+                }
+            };
+
+            me.clearShadowZone = function(){
+                for (var i = 0; i < fields.length; i++) {
+                    var row = fields[i];
+                    var _fields = row.filter(function(cell){
+                         return cell.type_figure == 'shadow';
+                    });
+
+                    _fields.forEach(function(_f){
+                        me.removeFillFromField(_f.row, _f.col);
+                    });
+                }
+            };
+
+            me.getShadowZone = function(figure){
+                return shadow_zone;
             };
 
             return me;

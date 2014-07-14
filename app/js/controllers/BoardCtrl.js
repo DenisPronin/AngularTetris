@@ -39,6 +39,7 @@ ctrls.controller('BoardCtrl', [
                 var start_col = 6;
 
                 var changedZone = Fields.setZone(figure, start_row, start_col);
+                Fields.setShadowZone(figure, start_row, start_col);
                 if(changedZone){
                     Fields.fillZone(figure);
                     $scope.movingFigure = {
@@ -73,6 +74,7 @@ ctrls.controller('BoardCtrl', [
         $scope.launch_new_game = function(){
             endProcess();
             $scope.gameOver = false;
+            $scope.pause = false;
             initBoard();
             Fields.clearFields();
             $scope.addFigureForMove();
@@ -117,6 +119,7 @@ ctrls.controller('BoardCtrl', [
                 Fields.clearZone();
                 var zoneChanged = Fields.setZone(figure, mf.start_row, mf.start_col);
                 if(zoneChanged){ // shifting of zone is occured
+                    Fields.setShadowZone(figure, mf.start_row, mf.start_col);
                     Fields.fillZone(figure);
                 }
                 else{
@@ -156,6 +159,7 @@ ctrls.controller('BoardCtrl', [
 
                 var zoneChanged = Fields.setZone(figure, mf.start_row, mf.start_col);
                 if(zoneChanged){    // can figure rotating?
+                    Fields.setShadowZone(figure, mf.start_row, mf.start_col);
                     Fields.fillZone(figure);
                 }
                 else{
