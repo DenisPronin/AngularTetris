@@ -8,6 +8,7 @@ ctrls.controller('BoardCtrl', [
     function($scope, $interval, $fields, $figures) {
         $scope.rows = null;
         $scope.gameOver = false;
+        $scope.pause = false;
         $scope.score = 0;
 
         var board_width = 14;
@@ -29,7 +30,7 @@ ctrls.controller('BoardCtrl', [
         $scope.movingFigure = {};
 
         $scope.addFigureForMove = function(){
-            if(!$scope.gameOver){
+            if(!$scope.gameOver && !$scope.pause){
                 var figure = $figures.getFigureFromQueue(0);
 
                 var empty_rows = figure.getEmptyRowsFromAbove();
@@ -46,7 +47,7 @@ ctrls.controller('BoardCtrl', [
                         figure: figure
                     };
 
-                    $scope.movingFigure.process = $interval($scope.moveDown, speed);
+                    startProcess(speed);
                 }
                 else{
                     endGame(figure, start_row, start_col);
@@ -77,6 +78,16 @@ ctrls.controller('BoardCtrl', [
             $scope.addFigureForMove();
         };
 
+        $scope.pause_game = function(){
+            $scope.pause = true;
+            endProcess();
+        };
+
+        $scope.play_game = function(){
+            $scope.pause = false;
+            startProcess(speed);
+        };
+
         $scope.moveRight = function(){
             move('start_col', true, 'right');
         };
@@ -91,12 +102,12 @@ ctrls.controller('BoardCtrl', [
 
         $scope.moveFallDown = function(){
             endProcess();
-            $scope.movingFigure.process = $interval($scope.moveDown, fallen_speed);
+            startProcess(fallen_speed);
             move('start_row', true, 'down');
         };
 
         var move = function(coord_changed, added, mode){
-            if(!$scope.gameOver){
+            if(!$scope.gameOver && !$scope.pause){
                 var mf = $scope.movingFigure;
                 if($.isEmptyObject(mf)) return null;
 
@@ -121,7 +132,7 @@ ctrls.controller('BoardCtrl', [
         };
 
         $scope.rotate = function(){
-            if(!$scope.gameOver){
+            if(!$scope.gameOver  && !$scope.pause){
                 var mf = $scope.movingFigure;
                 if($.isEmptyObject(mf)) return null;
                 var figure = mf.figure;
@@ -200,6 +211,10 @@ ctrls.controller('BoardCtrl', [
         var editScore = function(){
             var full_rows_nums = Fields.checkFullLines();
             $scope.score += full_rows_nums.length * cost_line;
+        };
+
+        var startProcess = function(_speed){
+            $scope.movingFigure.process = $interval($scope.moveDown, _speed);
         };
 
         var endProcess = function(){

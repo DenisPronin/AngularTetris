@@ -1,9 +1,9 @@
 <div id="gameContainer" data-game-controls data-ng-controller="BoardCtrl" class="pull-left">
     <board></board>
     <div class="controls">
-        <a href="javascript:void(0)" class="btn btn-info glyphicon glyphicon-play" ng-click="launch_new_game()"></a>
-        <a href="javascript:void(0)" class="btn btn-info glyphicon glyphicon-pause" ng-click="launch_new_game()"></a>
         <a href="javascript:void(0)" class="btn btn-info glyphicon glyphicon-repeat" ng-click="launch_new_game()"></a>
+        <a href="javascript:void(0)" class="btn btn-info glyphicon glyphicon-play" ng-click="play_game()" data-ng-show="pause"></a>
+        <a href="javascript:void(0)" class="btn btn-info glyphicon glyphicon-pause" ng-click="pause_game()" data-ng-show="!pause"></a>
     </div>
     <div score="{{ score }}"></div>
 </div>
