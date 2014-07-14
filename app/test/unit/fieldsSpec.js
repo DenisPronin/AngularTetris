@@ -2,6 +2,8 @@
 describe('fields', function() {
 
     beforeEach(module('AppTetris.services'));
+    beforeEach(module('AppTetris.filters'));
+    beforeEach(module('AppTetris.controllers'));
 
     describe('Check Fields service', function() {
         var $fields;
@@ -11,7 +13,7 @@ describe('fields', function() {
 
         beforeEach(function(){
             inject(function(_Fields_) {
-                $fields = _Fields_;
+                $fields = new _Fields_();
                 $fields.initBoard(board_height, board_width, BORDER_WIDTH);
             });
         });

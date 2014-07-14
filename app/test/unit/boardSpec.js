@@ -18,8 +18,8 @@ describe('Board', function() {
         inject(function ($rootScope, $controller, $interval, _Fields_, _Figures_, $timeout){
             timeout = $timeout;
             $scope = $rootScope.$new();
-            $fields = _Fields_;
             var Board = $controller('BoardCtrl', { $scope: $scope, $interval: $interval, Fields: _Fields_, Figures: _Figures_ });
+            $fields = $scope.fields;
             $scope.$digest();
         });
     });

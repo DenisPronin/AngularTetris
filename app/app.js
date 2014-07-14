@@ -11,9 +11,10 @@ angular.module('AppTetris', [
     'AppTetris.controllers'
 ]).
 config(['$routeProvider', function($routeProvider) {
-    $routeProvider.when('/', {templateUrl: 'partials/game.html', controller: 'BoardCtrl'});
+    $routeProvider.when('/', {templateUrl: 'partials/game.html'});
     $routeProvider.otherwise({redirectTo: '/'});
 }]);
 
+var ctrls = angular.module('AppTetris.controllers', []);
 var services = angular.module('AppTetris.services', []);
 

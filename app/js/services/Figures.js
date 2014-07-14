@@ -14,6 +14,7 @@ services.factory('Figures', [
 
         var figures = [];
         figures.push($l_left, $l_right, $line, $square, $l_zigzag, $r_zigzag, $ship);
+        var _queue = [];
 
         me.getFigures = function(){
             return figures;
@@ -23,6 +24,30 @@ services.factory('Figures', [
             var _random = $filter('randomNumber')(0, figures.length - 1);
             return (figures[_random]) ? figures[_random]: null;
         };
+
+        me.createQueue = function(){
+            me.pushFigure();
+            me.pushFigure();
+        };
+
+        me.getFigureFromQueue = function(num){
+            return (num) ? _queue[num] : _queue[0];
+        };
+
+        me.pushFigure = function(){
+            var figure = me.getRandomFigure();
+            figure.setPosition(null);
+            _queue.push(figure);
+            if(_queue.length > 2){
+                _queue.shift();
+            }
+        };
+
+        me.broadcastQueue = function() {
+            $rootScope.$broadcast('changeQueue');
+        };
+
+        me.createQueue();
 
         return me;
     }

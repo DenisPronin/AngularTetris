@@ -11,6 +11,7 @@ describe('directives', function() {
     var SPACE_KEY = 32;
 
 
+    beforeEach(module('AppTetris.filters'));
     beforeEach(module('AppTetris.services'));
     beforeEach(module('AppTetris.controllers'));
     beforeEach(module('AppTetris.directives'));
