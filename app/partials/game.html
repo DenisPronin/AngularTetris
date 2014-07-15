@@ -5,7 +5,10 @@
         <a href="javascript:void(0)" class="btn btn-info glyphicon glyphicon-play" ng-click="play_game()" data-ng-show="pause"></a>
         <a href="javascript:void(0)" class="btn btn-info glyphicon glyphicon-pause" ng-click="pause_game()" data-ng-show="!pause"></a>
     </div>
-    <div score="{{ score }}"></div>
+</div>
+
+<div id="scoreContainer" data-ng-controller="ScoreCtrl">
+    <score></score>
 </div>
 
 <div id="nextFigure" class="pull-left" data-ng-controller="NextFigureBoardCtrl">

@@ -5,18 +5,17 @@ ctrls.controller('BoardCtrl', [
     '$interval',
     'Fields',
     'Figures',
-    function($scope, $interval, $fields, $figures) {
+    'Score',
+    function($scope, $interval, $fields, $figures, $score) {
         $scope.rows = null;
         $scope.gameOver = false;
         $scope.pause = false;
-        $scope.score = 0;
 
         var board_width = 14;
         var board_height = 24;
         var BORDER_WIDTH = 2;
         var speed = 500;
         var fallen_speed = 50;
-        var cost_line = 50;
 
         var Fields = new $fields();
         $scope.fields = Fields;
@@ -214,7 +213,7 @@ ctrls.controller('BoardCtrl', [
 
         var editScore = function(){
             var full_rows_nums = Fields.checkFullLines();
-            $scope.score += full_rows_nums.length * cost_line;
+            $score.setScore(full_rows_nums.length);
         };
 
         var startProcess = function(_speed){

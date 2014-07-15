@@ -46,12 +46,9 @@ directives.directive('board', function(){
     }
 });
 
-directives.directive('score', function(){
+directives.directive('score', ['Score', function($score){
     return {
-        restrict: 'A',
-        scope: {
-            score: '@'
-        },
+        restrict: 'E',
         templateUrl: 'partials/score.html'
     }
-});
+}]);
