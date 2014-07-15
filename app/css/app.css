@@ -1,6 +1,5 @@
 .game_area{
     border-collapse: collapse;
-    margin: 15px;
 }
 
 .game_area td{
@@ -9,8 +8,12 @@
     border: 1px solid transparent;
 }
 
-#gameContainer, #nextFigure{
-    padding: 15px;
+#gameContainer{
+    margin: auto;
+}
+
+.standart_table{
+    display: table;
 }
 
 .controls a{

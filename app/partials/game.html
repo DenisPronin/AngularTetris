@@ -1,16 +1,20 @@
-<div id="gameContainer" data-game-controls data-ng-controller="BoardCtrl" class="pull-left">
-    <board></board>
-    <div class="controls">
-        <a href="javascript:void(0)" class="btn btn-info glyphicon glyphicon-repeat" ng-click="launch_new_game()"></a>
-        <a href="javascript:void(0)" class="btn btn-info glyphicon glyphicon-play" ng-click="play_game()" data-ng-show="pause"></a>
-        <a href="javascript:void(0)" class="btn btn-info glyphicon glyphicon-pause" ng-click="pause_game()" data-ng-show="!pause"></a>
+<div id="gameContainer" class="standart_table">
+    <div data-game-controls data-ng-controller="BoardCtrl" class="pull-left">
+        <board></board>
+        <div class="controls">
+            <a href="javascript:void(0)" class="btn btn-info glyphicon glyphicon-repeat" ng-click="launch_new_game()"></a>
+            <a href="javascript:void(0)" class="btn btn-info glyphicon glyphicon-play" ng-click="play_game()" data-ng-show="pause"></a>
+            <a href="javascript:void(0)" class="btn btn-info glyphicon glyphicon-pause" ng-click="pause_game()" data-ng-show="!pause"></a>
+        </div>
+    </div>
+    <div class="pull-left">
+        <div id="nextFigure" data-ng-controller="NextFigureBoardCtrl">
+            <board></board>
+        </div>
+        <div id="scoreContainer" data-ng-controller="ScoreCtrl">
+            <score></score>
+        </div>
+
     </div>
 </div>
 
-<div id="nextFigure" class="pull-left" data-ng-controller="NextFigureBoardCtrl">
-    <board></board>
-</div>
-
-<div id="scoreContainer" data-ng-controller="ScoreCtrl" class="pull-left">
-    <score></score>
-</div>
