@@ -198,9 +198,11 @@ services.factory('Fields', [
                 var name = (!shadowMode) ? figure.getName() : 'shadow';
                 for (var i = 0; i < position.length; i++) {
                     for (var j = 0; j < position[i].length; j++) {
-                        var coords = _zone[i][j];
-                        if(coords && position[i][j]){
-                            me.addFillToField(coords.row, coords.col, name);
+                        if(_zone[i] && _zone[i][j]){
+                            var coords = _zone[i][j];
+                            if(coords && position[i][j]){
+                                me.addFillToField(coords.row, coords.col, name);
+                            }
                         }
                     }
                 }

@@ -48,8 +48,8 @@ ctrls.controller('BoardCtrl', [
                 var start_col = 6;
 
                 var changedZone = Fields.setZone(figure, start_row, start_col);
-                setShadow(figure, start_row, start_col);
                 if(changedZone){
+                    setShadow(figure, start_row, start_col);
                     Fields.fillZone(figure);
                     $scope.movingFigure = {
                         start_row: start_row,
@@ -77,7 +77,7 @@ ctrls.controller('BoardCtrl', [
                 }
             }
             $scope.gameOver = true;
-            alert('Game end!');
+//            alert('Game end!');
         };
 
         $scope.launch_new_game = function(){
