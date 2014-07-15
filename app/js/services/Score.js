@@ -6,6 +6,10 @@ services.factory('Score', [
         var cost_line = 50;
 
         me.setScore = function(_score){
+            score = _score * cost_line;
+        };
+
+        me.updateScore = function(_score){
             score += _score * cost_line;
         };
 

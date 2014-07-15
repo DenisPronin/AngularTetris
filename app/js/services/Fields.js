@@ -27,6 +27,28 @@ services.factory('Fields', [
                 }
             };
 
+            me.initLevelBoard = function(level){
+                initBoardParams(level.getHeight(), level.getWidth(), level.getBorderWidth());
+                fields = [];
+                var _map = level.getMap();
+                var figures = $figures.getFigures();
+                for (var i = 0; i < board_height; i++) {
+                    for (var j = 0; j < board_width;j++){
+                        var value = _map[i][j];
+                        if(!value){
+                            me.addField(i, j, false, '');
+                        }
+                        else if(value === 1){
+                            me.addField(i, j, true, 'border');
+                        }
+                        else{
+                            me.addField(i, j, true, figures[value - 2].getName());
+                            me.addFieldToHeap(i, j);
+                        }
+                    }
+                }
+            };
+
             var initBoardParams = function(_board_height, _board_width, _border_width){
                 board_height = _board_height;
                 board_width = _board_width;

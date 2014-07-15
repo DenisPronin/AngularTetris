@@ -1,12 +1,14 @@
 'use strict';
 
 ctrls.controller('BoardCtrl', [
+    '$rootScope',
     '$scope',
     '$interval',
     'Fields',
     'Figures',
     'Score',
-    function($scope, $interval, $fields, $figures, $score) {
+    'Levels',
+    function($rootScope, $scope, $interval, $fields, $figures, $score, $levels) {
         $scope.rows = null;
         $scope.gameOver = false;
         $scope.pause = false;
@@ -22,10 +24,17 @@ ctrls.controller('BoardCtrl', [
         $scope.fields = Fields;
 
         var initBoard = function(){
-            Fields.initBoard(board_height, board_width, BORDER_WIDTH);
+            var level = $levels.getCurrentLevel();
+            if(level){
+                Fields.initLevelBoard(level);
+            }
+            else{ // classic game
+                Fields.initBoard(board_height, board_width, BORDER_WIDTH);
+            }
             $scope.rows = Fields.getFields();
         };
         initBoard();
+        $score.setScore(0);
 
         $scope.movingFigure = {};
 
@@ -76,7 +85,6 @@ ctrls.controller('BoardCtrl', [
             $scope.gameOver = false;
             $scope.pause = false;
             initBoard();
-            Fields.clearFields();
             $scope.addFigureForMove();
         };
 
@@ -214,7 +222,7 @@ ctrls.controller('BoardCtrl', [
 
         var editScore = function(){
             var full_rows_nums = Fields.checkFullLines();
-            $score.setScore(full_rows_nums.length);
+            $score.updateScore(full_rows_nums.length);
         };
 
         var startProcess = function(_speed){
@@ -230,6 +238,11 @@ ctrls.controller('BoardCtrl', [
                 Fields.setShadowZone(figure, start_row, start_col);
             }
         };
+
+        $rootScope.$on('$locationChangeSuccess', function () {
+            $scope.gameOver = true;
+            endProcess();
+        });
     }
 ]);
 
