@@ -10,6 +10,7 @@ ctrls.controller('BoardCtrl', [
         $scope.rows = null;
         $scope.gameOver = false;
         $scope.pause = false;
+        $scope.onShadow = true;
 
         var board_width = 14;
         var board_height = 24;
@@ -38,7 +39,7 @@ ctrls.controller('BoardCtrl', [
                 var start_col = 6;
 
                 var changedZone = Fields.setZone(figure, start_row, start_col);
-                Fields.setShadowZone(figure, start_row, start_col);
+                setShadow(figure, start_row, start_col);
                 if(changedZone){
                     Fields.fillZone(figure);
                     $scope.movingFigure = {
@@ -118,7 +119,7 @@ ctrls.controller('BoardCtrl', [
                 Fields.clearZone();
                 var zoneChanged = Fields.setZone(figure, mf.start_row, mf.start_col);
                 if(zoneChanged){ // shifting of zone is occured
-                    Fields.setShadowZone(figure, mf.start_row, mf.start_col);
+                    setShadow(figure, mf.start_row, mf.start_col);
                     Fields.fillZone(figure);
                 }
                 else{
@@ -158,7 +159,7 @@ ctrls.controller('BoardCtrl', [
 
                 var zoneChanged = Fields.setZone(figure, mf.start_row, mf.start_col);
                 if(zoneChanged){    // can figure rotating?
-                    Fields.setShadowZone(figure, mf.start_row, mf.start_col);
+                    setShadow(figure, mf.start_row, mf.start_col);
                     Fields.fillZone(figure);
                 }
                 else{
@@ -222,6 +223,12 @@ ctrls.controller('BoardCtrl', [
 
         var endProcess = function(){
             $interval.cancel($scope.movingFigure.process);
+        };
+
+        var setShadow = function(figure, start_row, start_col){
+            if($scope.onShadow){
+                Fields.setShadowZone(figure, start_row, start_col);
+            }
         };
     }
 ]);

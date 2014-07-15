@@ -302,7 +302,6 @@ services.factory('Fields', [
                     me.setShadowZone(figure, start_row + 1, start_col);
                 }
                 else{
-                    console.log('Shadow is coming!');
                     me.clearShadowZone();
                     me.fillZone(figure, true);
                 }
