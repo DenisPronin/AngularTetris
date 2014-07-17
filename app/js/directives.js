@@ -42,13 +42,13 @@ directives.directive('gameControls', function(){
 directives.directive('board', function(){
     return {
         restrict: 'E',
-        templateUrl: 'partials/board.html'
+        templateUrl: 'app/partials/board.html'
     }
 });
 
 directives.directive('score', ['Score', function($score){
     return {
         restrict: 'E',
-        templateUrl: 'partials/score.html'
+        templateUrl: 'app/partials/score.html'
     }
 }]);

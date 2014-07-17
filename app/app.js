@@ -11,9 +11,9 @@ angular.module('AppTetris', [
     'AppTetris.controllers'
 ]).
 config(['$routeProvider', function($routeProvider) {
-    $routeProvider.when('/', {templateUrl: 'partials/main_menu.html'});
-    $routeProvider.when('/play', {templateUrl: 'partials/game.html'});
-    $routeProvider.when('/levels', {templateUrl: 'partials/levels.html'});
+    $routeProvider.when('/', {templateUrl: 'app/partials/main_menu.html'});
+    $routeProvider.when('/play', {templateUrl: 'app/partials/game.html'});
+    $routeProvider.when('/levels', {templateUrl: 'app/partials/levels.html'});
     $routeProvider.otherwise({redirectTo: '/'});
 }]);
 
