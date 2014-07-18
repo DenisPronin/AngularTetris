@@ -16,6 +16,9 @@ config(['$routeProvider', function($routeProvider) {
     $routeProvider.when('/play', {templateUrl: 'app/partials/game.html'});
     $routeProvider.when('/levels', {templateUrl: 'app/partials/levels.html'});
     $routeProvider.otherwise({redirectTo: '/'});
+}])
+.config(['localStorageServiceProvider', function(localStorageServiceProvider){
+    localStorageServiceProvider.setPrefix('ls');
 }]);
 
 var ctrls = angular.module('AppTetris.controllers', []);

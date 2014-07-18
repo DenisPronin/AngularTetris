@@ -37,7 +37,6 @@ ctrls.controller('BoardCtrl', [
             $scope.rows = Fields.getFields();
         };
         initBoard();
-        $score.setScore(0);
 
         $scope.movingFigure = {};
 
@@ -81,7 +80,7 @@ ctrls.controller('BoardCtrl', [
             }
             $scope.gameOver = true;
 
-            var modalInstance = $modal.open({
+            $modal.open({
                 templateUrl: 'app/partials/gameOver.html',
                 size: 'sm',
                 controller: 'GameOverCtrl',
@@ -94,6 +93,7 @@ ctrls.controller('BoardCtrl', [
             $scope.gameOver = false;
             $scope.pause = false;
             initBoard();
+            $score.setScore(0);
             $scope.addFigureForMove();
         };
 
