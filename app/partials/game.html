@@ -1,6 +1,10 @@
 <div id="gameContainer" class="standart_table">
     <div data-game-controls data-ng-controller="BoardCtrl" class="pull-left">
-        <board></board>
+        <div class="boardContainer">
+            <board></board>
+            <div data-start-count></div>
+        </div>
+
         <div class="controls">
             <a href="javascript:void(0)" class="btn btn-info glyphicon glyphicon-repeat" ng-click="launch_new_game()"></a>
             <a href="javascript:void(0)" class="btn btn-info glyphicon glyphicon-play" ng-click="play_game()" data-ng-show="pause"></a>

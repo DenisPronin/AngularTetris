@@ -77,7 +77,6 @@ ctrls.controller('BoardCtrl', [
                 }
             }
             $scope.gameOver = true;
-//            alert('Game end!');
         };
 
         $scope.launch_new_game = function(){

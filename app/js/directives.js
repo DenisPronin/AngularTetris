@@ -52,3 +52,26 @@ directives.directive('score', ['Score', function($score){
         templateUrl: 'app/partials/score.html'
     }
 }]);
+
+directives.directive('startCount', ['$interval', function($interval){
+    return {
+        restrict: 'A',
+        templateUrl: 'app/partials/count.html',
+        link: function (scope, element, attrs) {
+            var i = 3;
+            var $count = $(element).find('.big_count');
+            var count_interval = $interval(function(){
+                i--;
+                if(i > 0){
+                    $count.text(i);
+                }
+                else{
+                    $(element).hide();
+                    $interval.cancel(count_interval);
+                    scope.launch_new_game();
+                }
+            }, 1000);
+        }
+    };
+}]);
+
