@@ -1,13 +1,14 @@
 {
-    "name": "AngularTetris",
-    "version": "0.0.1",
-    "dependencies": {
-        "angular-seed": "latest",
-        "angular-animate": "latest",
-        "angular-ui-bootstrap": "latest",
-        "angular-bootstrap": "latest",
-        "bootstrap": "latest",
-        "jquery": "latest",
-        "underscore": "latest"
-    }
+  "name": "AngularTetris",
+  "version": "0.0.1",
+  "dependencies": {
+    "angular-seed": "latest",
+    "angular-animate": "latest",
+    "angular-ui-bootstrap": "latest",
+    "angular-bootstrap": "latest",
+    "bootstrap": "latest",
+    "jquery": "latest",
+    "underscore": "latest",
+    "angular-local-storage": "~0.0.5"
+  }
 }

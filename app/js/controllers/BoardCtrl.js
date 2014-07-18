@@ -4,15 +4,18 @@ ctrls.controller('BoardCtrl', [
     '$rootScope',
     '$scope',
     '$interval',
+    '$modal',
     'Fields',
     'Figures',
     'Score',
     'Levels',
-    function($rootScope, $scope, $interval, $fields, $figures, $score, $levels) {
+    function($rootScope, $scope, $interval, $modal, $fields, $figures, $score, $levels) {
         $scope.rows = null;
         $scope.gameOver = false;
         $scope.pause = false;
         $scope.onShadow = true;
+
+        $scope.isGameStarting = false;
 
         var board_width = 14;
         var board_height = 24;
@@ -77,6 +80,13 @@ ctrls.controller('BoardCtrl', [
                 }
             }
             $scope.gameOver = true;
+
+            var modalInstance = $modal.open({
+                templateUrl: 'app/partials/gameOver.html',
+                size: 'sm',
+                controller: 'GameOverCtrl',
+                scope:$scope
+            });
         };
 
         $scope.launch_new_game = function(){

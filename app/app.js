@@ -5,6 +5,7 @@
 angular.module('AppTetris', [
     'ui.bootstrap',
     'ngRoute',
+    'LocalStorageModule',
     'AppTetris.filters',
     'AppTetris.services',
     'AppTetris.directives',

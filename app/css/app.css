@@ -16,9 +16,14 @@
     display: table;
 }
 
-.controls a{
-    background-color: #1251A0;
-    border-color: #096EEC;
+.controls a, .tetris_btn{
+    background-color: #1251A0!important;
+    border-color: #096EEC!important;
+}
+
+.controls a:hover, .tetris_btn:hover{
+    background-color: #2275DD !important;
+    border-color: #096EEC!important;
 }
 
 .game_area tr:nth-child(odd) td:nth-child(even){
@@ -113,4 +118,9 @@
     vertical-align: middle;
     font-size: 100px;
     color: #FFF;
+}
+
+.score_label{
+    font-size: 18px;
+    margin: 15px;
 }

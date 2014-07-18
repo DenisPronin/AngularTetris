@@ -5,7 +5,7 @@
             <div data-start-count></div>
         </div>
 
-        <div class="controls">
+        <div class="controls" data-ng-show="isGameStarting">
             <a href="javascript:void(0)" class="btn btn-info glyphicon glyphicon-repeat" ng-click="launch_new_game()"></a>
             <a href="javascript:void(0)" class="btn btn-info glyphicon glyphicon-play" ng-click="play_game()" data-ng-show="pause"></a>
             <a href="javascript:void(0)" class="btn btn-info glyphicon glyphicon-pause" ng-click="pause_game()" data-ng-show="!pause"></a>
