@@ -35,6 +35,7 @@ ctrls.controller('BoardCtrl', [
                 Fields.initBoard(board_height, board_width, BORDER_WIDTH);
             }
             $scope.rows = Fields.getFields();
+            $score.setScore(0);
         };
         initBoard();
 
@@ -93,7 +94,6 @@ ctrls.controller('BoardCtrl', [
             $scope.gameOver = false;
             $scope.pause = false;
             initBoard();
-            $score.setScore(0);
             $scope.addFigureForMove();
         };
 
