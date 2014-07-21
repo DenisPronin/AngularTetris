@@ -53,6 +53,13 @@ directives.directive('score', ['Score', function($score){
     }
 }]);
 
+directives.directive('speed', ['Speed', function($speed){
+    return {
+        restrict: 'E',
+        templateUrl: 'app/partials/speed.html'
+    }
+}]);
+
 directives.directive('startCount', ['$interval', function($interval){
     return {
         restrict: 'A',
