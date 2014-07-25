@@ -5,7 +5,7 @@ services.factory('Speed', [
         var current_speed = 0;
         var fallen_speed = 50;
 
-        var speed_count = 7;
+        var speed_count = 10;
         var first_speed = speed_count * 100;
         for (var i = 0; i < speed_count; i++) {
             speeds.push(first_speed - 100*i);

@@ -102,7 +102,7 @@ ctrls.controller('BoardCtrl', [
             $scope.pause = false;
             initBoard();
             $scope.addFigureForMove();
-            setIntervalForChangeSpeed(4000);
+            setIntervalForChangeSpeed(20000);
         };
 
         $scope.pause_game = function(){
@@ -114,7 +114,7 @@ ctrls.controller('BoardCtrl', [
         $scope.play_game = function(){
             $scope.pause = false;
             startProcess(speed);
-            setIntervalForChangeSpeed(4000);
+            setIntervalForChangeSpeed(20000);
         };
 
         $scope.moveRight = function(){

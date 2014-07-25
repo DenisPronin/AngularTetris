@@ -14,7 +14,7 @@ ctrls.controller('SpeedCtrl', [
             $scope.speedChanged = true;
             $timeout(function(){
                 $scope.speedChanged = false;
-            }, 400)
+            }, 2000);
         });
     }
 ]);
