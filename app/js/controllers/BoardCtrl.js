@@ -9,7 +9,8 @@ ctrls.controller('BoardCtrl', [
     'Figures',
     'Score',
     'Levels',
-    function($rootScope, $scope, $interval, $modal, $fields, $figures, $score, $levels) {
+    'Speed',
+    function($rootScope, $scope, $interval, $modal, $fields, $figures, $score, $levels, $speed) {
         $scope.rows = null;
         $scope.gameOver = false;
         $scope.pause = false;
@@ -20,8 +21,10 @@ ctrls.controller('BoardCtrl', [
         var board_width = 14;
         var board_height = 24;
         var BORDER_WIDTH = 2;
-        var speed = 500;
-        var fallen_speed = 50;
+
+        var isFallen = false; // is the figure falling down
+        var speed = $speed.getCurrentSpeed();
+        var speedInterval;
 
         var Fields = new $fields();
         $scope.fields = Fields;
@@ -36,6 +39,8 @@ ctrls.controller('BoardCtrl', [
             }
             $scope.rows = Fields.getFields();
             $score.setScore(0);
+
+            $speed.setCurrentSpeed(0);
         };
         initBoard();
 
@@ -60,6 +65,7 @@ ctrls.controller('BoardCtrl', [
                         figure: figure
                     };
 
+                    isFallen = false;
                     startProcess(speed);
                 }
                 else{
@@ -85,26 +91,30 @@ ctrls.controller('BoardCtrl', [
                 templateUrl: 'app/partials/gameOver.html',
                 size: 'sm',
                 controller: 'GameOverCtrl',
-                scope:$scope
+                scope: $scope
             });
         };
 
         $scope.launch_new_game = function(){
             endProcess();
+            endSpeedInterval();
             $scope.gameOver = false;
             $scope.pause = false;
             initBoard();
             $scope.addFigureForMove();
+            setIntervalForChangeSpeed(4000);
         };
 
         $scope.pause_game = function(){
             $scope.pause = true;
+            endSpeedInterval();
             endProcess();
         };
 
         $scope.play_game = function(){
             $scope.pause = false;
             startProcess(speed);
+            setIntervalForChangeSpeed(4000);
         };
 
         $scope.moveRight = function(){
@@ -121,7 +131,7 @@ ctrls.controller('BoardCtrl', [
 
         $scope.moveFallDown = function(){
             endProcess();
-            startProcess(fallen_speed);
+            startProcess($speed.getFallenSpeed());
             move('start_row', true, 'down');
         };
 
@@ -229,24 +239,50 @@ ctrls.controller('BoardCtrl', [
             $scope.addFigureForMove();
         };
 
+        var setShadow = function(figure, start_row, start_col){
+            if($scope.onShadow){
+                Fields.setShadowZone(figure, start_row, start_col);
+            }
+        };
+
         var editScore = function(){
             var full_rows_nums = Fields.checkFullLines();
             $score.updateScore(full_rows_nums.length);
         };
 
-        var startProcess = function(_speed){
+        var setIntervalForChangeSpeed = function(length_interval){
+            speedInterval = $interval(function(){
+                $speed.setNextSpeed()
+            }, length_interval);
+        };
+
+        var endSpeedInterval = function(){
+            $interval.cancel(speedInterval);
+        };
+
+        var startProcess = function(_speed, withoutDelay){
+            if(_speed == $speed.getFallenSpeed()){
+                isFallen = true;
+            }
             $scope.movingFigure.process = $interval($scope.moveDown, _speed);
+            if(withoutDelay){
+                $scope.moveDown();
+            }
         };
 
         var endProcess = function(){
             $interval.cancel($scope.movingFigure.process);
         };
 
-        var setShadow = function(figure, start_row, start_col){
-            if($scope.onShadow){
-                Fields.setShadowZone(figure, start_row, start_col);
+        $scope.$watch(function() {
+            return $speed.getNumOfSpeed();
+        }, function(newValue, oldValue) {
+            speed = $speed.getCurrentSpeed();
+            if($scope.movingFigure && $scope.movingFigure.process && !isFallen){
+                endProcess();
+                startProcess(speed, true);
             }
-        };
+        });
 
         $rootScope.$on('$locationChangeSuccess', function () {
             $scope.gameOver = true;
