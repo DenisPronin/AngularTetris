@@ -1,18 +1,28 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="AppTetris">
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>My Tetris on AngularJs</title>
-    <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>My Tetris on AngularJs</title>
+
+    <meta property="og:url" content="http://denispronin.github.io/AngularTetris/" />
+    <meta property="og:title" content="Tetris on AngularJS" />
+    <meta property="og:description" content="desctiption" />
+    <meta property="og:image" content="http://gameaboutsquares.com/14.png" />
+
+
     <link rel="stylesheet" href="app/css/cover.css">
     <link rel="stylesheet" href="app/css/app.css"/>
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css"/>
+
+    <script>var addthis_config = {"data_track_addressbar":true};</script>
+    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-53d224b87966c5b1"></script>
+
 </head>
 <body>
 
-    <div class="site-wrapper">
+    <div class="site-wrapper" ng-app="AppTetris">
         <div class="site-wrapper-inner">
             <div class="cover-container">
                 <div class="inner cover">
@@ -30,7 +40,7 @@
     <script src="bower_components/underscore/underscore.js"></script>
     <script src="bower_components/jquery/dist/jquery.min.js"></script>
     <!-- addthis -->
-    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-53d224b87966c5b1"></script>
+    <!--<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-53d224b87966c5b1"></script>-->
 
     <script src="app/app.js"></script>
     <script src="app/js/services/BaseFigure.js"></script>
