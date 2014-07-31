@@ -12,7 +12,7 @@ angular.module('AppTetris', [
     'AppTetris.controllers'
 ]).
 config(['$routeProvider', function($routeProvider) {
-    $routeProvider.when('/', {templateUrl: 'app/partials/main_menu.html'});
+    $routeProvider.when('/', {templateUrl: 'app/partials/game.html'});
     $routeProvider.when('/play', {templateUrl: 'app/partials/game.html'});
     $routeProvider.when('/levels', {templateUrl: 'app/partials/levels.html'});
     $routeProvider.otherwise({redirectTo: '/'});

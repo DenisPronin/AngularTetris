@@ -1,8 +1,8 @@
-<div id="levelsContainer" data-ng-controller="LevelsCtrl">
-   <div data-ng-repeat="level in levels" ng-if="level != null">
-
-       <a href="javascript:void(0)" class="btn btn-default"
-          data-ng-click="setLevel($index)">{{ level.getName() }}</a>
-
-   </div>
+<div id="levelsContainer" data-ng-controller="HeaderCtrl">
+    <div id="levelsInnerContainer">
+        <div data-ng-repeat="level in levels" ng-if="level != null" class="level_link">
+            <a href="javascript:void(0)" data-ng-class="{'btn': true, 'btn-success': isCompleteLevel($index), 'btn-warning': isCompleteLevel($index) == false}"
+               data-ng-click="setLevel($index)">{{ level.getName() }}</a>
+        </div>
+    </div>
 </div>

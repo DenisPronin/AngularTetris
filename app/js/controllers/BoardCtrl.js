@@ -21,6 +21,7 @@ ctrls.controller('BoardCtrl', [
         var board_width = 14;
         var board_height = 24;
         var BORDER_WIDTH = 2;
+        var speed_interval_length = 25000;
 
         var isFallen = false; // is the figure falling down
         var speed = $speed.getCurrentSpeed();
@@ -102,7 +103,7 @@ ctrls.controller('BoardCtrl', [
             $scope.pause = false;
             initBoard();
             $scope.addFigureForMove();
-            setIntervalForChangeSpeed(20000);
+            setIntervalForChangeSpeed(speed_interval_length);
         };
 
         $scope.pause_game = function(){
@@ -114,7 +115,7 @@ ctrls.controller('BoardCtrl', [
         $scope.play_game = function(){
             $scope.pause = false;
             startProcess(speed);
-            setIntervalForChangeSpeed(20000);
+            setIntervalForChangeSpeed(speed_interval_length);
         };
 
         $scope.moveRight = function(){
@@ -287,7 +288,25 @@ ctrls.controller('BoardCtrl', [
         $rootScope.$on('$locationChangeSuccess', function () {
             $scope.gameOver = true;
             endProcess();
+            endSpeedInterval();
         });
+
+        $scope.help = function(){
+            $scope.pause_game();
+            var modalInstance = $modal.open({
+                templateUrl: 'app/partials/help.html',
+                size: 'sm',
+                controller: 'GameOverCtrl',
+                scope: $scope
+            });
+
+            modalInstance.result.then(function () {
+                console.log(enter);
+            }, function () {
+                $scope.play_game();
+            });
+
+        };
     }
 ]);
 

@@ -10,8 +10,6 @@
     <meta property="og:title" content="Tetris on AngularJS" />
     <meta property="og:image" content="http://gameaboutsquares.com/14.png" />
 
-
-    <link rel="stylesheet" href="app/css/cover.css">
     <link rel="stylesheet" href="app/css/app.css"/>
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css"/>
 
@@ -19,17 +17,27 @@
     <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-53d224b87966c5b1"></script>
 
 </head>
-<body>
-
-    <div class="site-wrapper" ng-app="AppTetris">
-        <div class="site-wrapper-inner">
-            <div class="cover-container">
-                <div class="inner cover">
-                    <div ng-view></div>
-                </div>
+<body data-ng-app="AppTetris">
+    <div class="navbar navbar-default " role="navigation" ng-controller="HeaderCtrl">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">Tetris</a>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li ng-class="{ active: isClassic()}"><a href="#" data-ng-click="setLevel(0)">Classic game</a></li>
+                    <li ng-class="{ active: isAdventure()}"><a href="#levels" data-ng-click="setLevel(1)">Levels</a></li>
+                </ul>
             </div>
         </div>
     </div>
+
+    <div class="container">
+        <div data-ng-view></div>
+    </div>
+
+    <div class="addthis_sharing_toolbox"></div>
+
     <script src="bower_components/angular/angular.js"></script>
     <script src="bower_components/angular-route/angular-route.js"></script>
     <script src="bower_components/angular-local-storage/angular-local-storage.js"></script>
@@ -44,9 +52,9 @@
     <script src="app/js/services/Score.js"></script>
     <script src="app/js/services/Levels.js"></script>
     <script src="app/js/services/Speed.js"></script>
+    <script src="app/js/controllers/HeaderCtrl.js"></script>
     <script src="app/js/controllers/SpeedCtrl.js"></script>
     <script src="app/js/controllers/GameOverCtrl.js"></script>
-    <script src="app/js/controllers/LevelsCtrl.js"></script>
     <script src="app/js/controllers/BoardCtrl.js"></script>
     <script src="app/js/controllers/ScoreCtrl.js"></script>
     <script src="app/js/controllers/NextFigureBoardCtrl.js"></script>

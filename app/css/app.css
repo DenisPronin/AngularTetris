@@ -1,5 +1,10 @@
 body{
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
     overflow: hidden;
+    background-image: url(../img/puzzle.png);
 }
 
 .game_area{
@@ -13,7 +18,8 @@ body{
 }
 
 #gameContainer{
-    margin: auto;
+    text-align: center;
+    margin: 50px auto auto;
 }
 
 .standart_table{
@@ -131,7 +137,20 @@ body{
 
 .speedAlert{
     position: absolute;
-    top: 0;
+    top: 60px;
     left: 50%;
     width: 200px;
-    margin-left: -100px;}
+    margin-left: -100px;
+}
+
+#levelsInnerContainer{
+    display: table;
+    margin: auto;
+    padding: 15px;
+    border: 2px solid #1251A0;
+    border-radius: 5px;
+}
+
+.level_link{
+    margin: 15px;
+}
