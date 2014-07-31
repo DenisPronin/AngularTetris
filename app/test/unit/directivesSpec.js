@@ -4,6 +4,8 @@
 describe('directives', function() {
     var $scope;
     var element;
+    var timeout;
+
     var UP_KEY = 38;
     var DOWN_KEY = 40;
     var LEFT_KEY = 37;
@@ -11,16 +13,23 @@ describe('directives', function() {
     var SPACE_KEY = 32;
 
 
-    beforeEach(module('AppTetris.filters'));
+    beforeEach(module('ui.bootstrap'));
+    beforeEach(module('ngRoute'));
+    beforeEach(module('LocalStorageModule'));
+
+    beforeEach(module('AppTetris.controllers'));
     beforeEach(module('AppTetris.services'));
+    beforeEach(module('AppTetris.filters'));
     beforeEach(module('AppTetris.controllers'));
     beforeEach(module('AppTetris.directives'));
 
     describe('Key events', function() {
         beforeEach(function () {
-            inject(function ($compile, $rootScope, $controller, _Fields_, _Figures_){
+            inject(function ($compile, $rootScope, $controller, $interval, $modal, _Fields_, _Figures_, _Score_, _Levels_, _Speed_, $timeout){
+                timeout = $timeout;
                 $scope = $rootScope.$new();
-                var Board = $controller('BoardCtrl', { $scope: $scope, $interval: {}, Fields: _Fields_, Figures: _Figures_ });
+
+                var Board = $controller('BoardCtrl', {$scope: $scope, $interval: $interval, $modal: $modal, Fields: _Fields_, Figures: _Figures_ , Score: _Score_, Levels: _Levels_ , Speed: _Speed_ });
                 element = angular.element("<div data-game-controls></div>");
                 $compile(element)($scope);
                 $scope.$digest();

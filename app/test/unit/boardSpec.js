@@ -8,17 +8,20 @@ describe('Board', function() {
     var board_width = 14;
     var board_height = 24;
     var BORDER_WIDTH = 2;
+    beforeEach(module('ui.bootstrap'));
+    beforeEach(module('ngRoute'));
+    beforeEach(module('LocalStorageModule'));
 
-
+    beforeEach(module('AppTetris.controllers'));
     beforeEach(module('AppTetris.services'));
     beforeEach(module('AppTetris.filters'));
     beforeEach(module('AppTetris.controllers'));
-
     beforeEach(function () {
-        inject(function ($rootScope, $controller, $interval, _Fields_, _Figures_, $timeout){
+        inject(function ($rootScope, $controller, $interval, $modal, _Fields_, _Figures_, _Score_, _Levels_, _Speed_, $timeout){
             timeout = $timeout;
             $scope = $rootScope.$new();
-            var Board = $controller('BoardCtrl', { $scope: $scope, $interval: $interval, Fields: _Fields_, Figures: _Figures_ });
+
+            var Board = $controller('BoardCtrl', {$scope: $scope, $interval: $interval, $modal: $modal, Fields: _Fields_, Figures: _Figures_ , Score: _Score_, Levels: _Levels_ , Speed: _Speed_ });
             $fields = $scope.fields;
             $scope.$digest();
         });
