@@ -324,7 +324,6 @@ ctrls.controller('BoardCtrl', [
         });
 
         $scope.help = function(){
-            $scope.pause_game();
             var modalInstance = $modal.open({
                 templateUrl: 'app/partials/help.html',
                 size: 'sm',
@@ -332,12 +331,13 @@ ctrls.controller('BoardCtrl', [
                 scope: $scope
             });
 
-            modalInstance.result.then(function () {
-                console.log(enter);
-            }, function () {
-                $scope.play_game();
-            });
-
+            if(!$scope.gameOver){
+                $scope.pause_game();
+                modalInstance.result.then(function () {
+                }, function () {
+                    $scope.play_game();
+                });
+            }
         };
 
         initBoard();
