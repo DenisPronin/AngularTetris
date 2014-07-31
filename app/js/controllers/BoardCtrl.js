@@ -34,6 +34,7 @@ ctrls.controller('BoardCtrl', [
             var level = $levels.getCurrentLevel();
             if(level){
                 Fields.initLevelBoard(level);
+                checkLevelWin(level);
             }
             else{ // classic game
                 Fields.initBoard(board_height, board_width, BORDER_WIDTH);
@@ -43,7 +44,6 @@ ctrls.controller('BoardCtrl', [
 
             $speed.setCurrentSpeed(0);
         };
-        initBoard();
 
         $scope.movingFigure = {};
 
@@ -75,9 +75,36 @@ ctrls.controller('BoardCtrl', [
             }
         };
 
+        var checkLevelWin = function(level){
+            var conditions = level.getWinConditions();
+            if(conditions.needScore){
+                $scope.$watch(function() {
+                    return $score.getScore();
+                }, function(newValue, oldValue){
+                    if(newValue != oldValue && !$scope.gameOver){
+                        var win = level.checkWin();
+                        if(win){
+                            $levels.setComplete(level);
+                            winGame();
+                        }
+                    }
+                });
+            }
+        };
+
+        var winGame = function(){
+            endAllIntervals();
+            $scope.gameOver = true;
+            $modal.open({
+                templateUrl: 'app/partials/gameWin.html',
+                size: 'sm',
+                scope: $scope
+            });
+        };
+
         var endGame = function(figure, start_row, start_col){
+            endAllIntervals();
             if(start_row > 0){
-                endProcess();
                 // show only part of figure which can entering on board
                 for (var i = start_row-1; i >= 0; i--) {
                     var hasEndZone = Fields.setZone(figure, i, start_col, true);
@@ -97,19 +124,20 @@ ctrls.controller('BoardCtrl', [
         };
 
         $scope.launch_new_game = function(){
-            endProcess();
-            endSpeedInterval();
+            endAllIntervals();
             $scope.gameOver = false;
             $scope.pause = false;
             initBoard();
+        };
+
+        $scope.startAddFigure = function(){
             $scope.addFigureForMove();
             setIntervalForChangeSpeed(speed_interval_length);
         };
 
         $scope.pause_game = function(){
             $scope.pause = true;
-            endSpeedInterval();
-            endProcess();
+            endAllIntervals();
         };
 
         $scope.play_game = function(){
@@ -275,6 +303,11 @@ ctrls.controller('BoardCtrl', [
             $interval.cancel($scope.movingFigure.process);
         };
 
+        var endAllIntervals = function(){
+            endProcess();
+            endSpeedInterval();
+        };
+
         $scope.$watch(function() {
             return $speed.getNumOfSpeed();
         }, function(newValue, oldValue) {
@@ -287,8 +320,7 @@ ctrls.controller('BoardCtrl', [
 
         $rootScope.$on('$locationChangeSuccess', function () {
             $scope.gameOver = true;
-            endProcess();
-            endSpeedInterval();
+            endAllIntervals();
         });
 
         $scope.help = function(){
@@ -307,6 +339,8 @@ ctrls.controller('BoardCtrl', [
             });
 
         };
+
+        initBoard();
     }
 ]);
 

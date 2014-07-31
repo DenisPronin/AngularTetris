@@ -1,8 +1,9 @@
 services.factory('Levels', [
     '$filter',
+    'localStorageService',
     'L1',
     'L2',
-    function($filter, $l1, $l2){
+    function($filter, localStorageService, $l1, $l2){
         var me = this;
 
         var levels = [];
@@ -22,52 +23,98 @@ services.factory('Levels', [
             return levels[current_level];
         };
 
+        me.setComplete = function(level){
+            var name = level.getName();
+            var complete_levels = localStorageService.get('completeLevels');
+            if(complete_levels){
+                var intersect =  complete_levels.filter(function(n){
+                    return name == n;
+                });
+                if(intersect.length == 0){
+                    complete_levels.push(name);
+                    writeComplete(complete_levels);
+                }
+            }
+            else{
+                writeComplete([name]);
+            }
+        };
+
+        var writeComplete = function(_levels){
+            localStorageService.set('completeLevels', _levels);
+        };
+
+        me.getComplete = function(){
+            localStorageService.get('completeLevels');
+        };
+
         return me;
     }
 ]);
 
-services.factory('BaseLevel', [function(){
-    return function(){
-        var me = this;
+services.factory('BaseLevel', [
+    'Score',
+    function($score){
+        return function(){
+            var me = this;
 
-        var name = '';
-        var map = null;
-        var width = 0;
-        var height = 0;
-        var BORDER_WIDTH = 2;
+            var name = '';
+            var map = null;
+            var width = 0;
+            var height = 0;
+            var BORDER_WIDTH = 2;
 
-        me.initLevel = function(_name, _map){
-            name = _name;
-            map = _map;
-            height = _map.length;
-            if(map.length > 0){
-                width = map[0].length;
-            }
+    //        timeLimit, needScore
+            var win_conditions = {};
+
+            me.initLevel = function(_name, _map, _win_conditions){
+                name = _name;
+                map = _map;
+                height = _map.length;
+                if(map.length > 0){
+                    width = map[0].length;
+                }
+                win_conditions = _win_conditions;
+            };
+
+            me.getName = function(){
+                return name;
+            };
+
+            me.getMap = function(){
+                return map;
+            };
+
+            me.getWidth = function(){
+                return width;
+            };
+
+            me.getHeight = function(){
+                return height;
+            };
+
+            me.getBorderWidth = function(){
+                return BORDER_WIDTH;
+            };
+
+            me.getWinConditions = function(){
+                return win_conditions;
+            };
+
+            me.checkWin = function(){
+                var win = true;
+                var conditions = me.getWinConditions();
+                if(conditions.needScore){
+                    win = ($score.getScore() >= conditions.needScore);
+                }
+
+                return win;
+            };
+
+            return me;
         };
-
-        me.getName = function(){
-            return name;
-        };
-
-        me.getMap = function(){
-            return map;
-        };
-
-        me.getWidth = function(){
-            return width;
-        };
-
-        me.getHeight = function(){
-            return height;
-        };
-
-        me.getBorderWidth = function(){
-            return BORDER_WIDTH;
-        };
-
-        return me;
-    };
-}]);
+    }
+]);
 
 /*
 * Border block: 1
@@ -112,8 +159,11 @@ services.factory('BaseLevel', [function(){
             [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
         ];
 
+        var win_conditions = {
+            needScore: 150
+        };
         var base =  new $baseLevel();
-        base.initLevel(name, map);
+        base.initLevel(name, map, win_conditions);
 
         return base;
     }
@@ -151,8 +201,13 @@ services.factory('BaseLevel', [function(){
             [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
         ];
 
+        var win_conditions = {
+            needScore: 500,
+            timeLimit: 100
+        };
+
         var base =  new $baseLevel();
-        base.initLevel(name, map);
+        base.initLevel(name, map, win_conditions);
 
         return base;
     }

@@ -76,7 +76,7 @@ directives.directive('startCount', ['$interval', function($interval){
                     $(element).hide();
                     $interval.cancel(count_interval);
                     scope.isGameStarting = true;
-                    scope.launch_new_game();
+                    scope.startAddFigure();
                 }
             }, 1000);
         }
