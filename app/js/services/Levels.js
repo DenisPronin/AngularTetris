@@ -66,8 +66,9 @@ services.factory('BaseLevel', [
 
     //        timeLimit, needScore
             var win_conditions = {};
+            var description = '';
 
-            me.initLevel = function(_name, _map, _win_conditions){
+            me.initLevel = function(_name, _map, _win_conditions, _description){
                 name = _name;
                 map = _map;
                 height = _map.length;
@@ -75,6 +76,7 @@ services.factory('BaseLevel', [
                     width = map[0].length;
                 }
                 win_conditions = _win_conditions;
+                description = _description;
             };
 
             me.getName = function(){
@@ -99,6 +101,10 @@ services.factory('BaseLevel', [
 
             me.getWinConditions = function(){
                 return win_conditions;
+            };
+
+            me.getDescription = function(){
+                return description;
             };
 
             me.checkWin = function(){
@@ -159,11 +165,15 @@ services.factory('BaseLevel', [
             [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
         ];
 
+        var _need_score = 150;
         var win_conditions = {
-            needScore: 150
+            needScore: _need_score
         };
+
+        var description = 'Get ' + _need_score + ' points.';
+
         var base =  new $baseLevel();
-        base.initLevel(name, map, win_conditions);
+        base.initLevel(name, map, win_conditions, description);
 
         return base;
     }
@@ -201,13 +211,17 @@ services.factory('BaseLevel', [
             [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
         ];
 
+        var _need_score = 500;
+        var _time_limit = 90;
         var win_conditions = {
-            needScore: 500,
-            timeLimit: 100
+            needScore: _need_score,
+            timeLimit: _time_limit
         };
 
+        var description = 'Get ' + _need_score + ' points in ' + _time_limit + ' seconds.';
+
         var base =  new $baseLevel();
-        base.initLevel(name, map, win_conditions);
+        base.initLevel(name, map, win_conditions, description);
 
         return base;
     }

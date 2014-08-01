@@ -29,11 +29,14 @@ ctrls.controller('BoardCtrl', [
 
         var Fields = new $fields();
         $scope.fields = Fields;
+        $scope.levelDescription = null;
 
         var initBoard = function(){
             var level = $levels.getCurrentLevel();
             if(level){
                 Fields.initLevelBoard(level);
+                var description = level.getDescription();
+                $scope.levelDescription = (description) ? description : null;
                 checkLevelWin(level);
             }
             else{ // classic game
