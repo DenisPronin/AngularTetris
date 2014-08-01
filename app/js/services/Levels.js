@@ -40,6 +40,19 @@ services.factory('Levels', [
             }
         };
 
+        me.isCompleteLevel = function(level){
+            var name = level.getName();
+            var complete_levels = localStorageService.get('completeLevels');
+            if(complete_levels){
+                var intersect =  complete_levels.filter(function(n){
+                    return name == n;
+                });
+                return intersect.length > 0;
+            }
+            return false;
+        };
+
+
         var writeComplete = function(_levels){
             localStorageService.set('completeLevels', _levels);
         };

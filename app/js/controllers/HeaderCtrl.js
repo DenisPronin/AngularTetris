@@ -22,8 +22,8 @@ ctrls.controller('HeaderCtrl', [
             $levels.setCurrentLevel(1);
         }
 
-        $scope.isCompleteLevel = function(){
-          return false;
+        $scope.isCompleteLevel = function(level){
+            return $levels.isCompleteLevel(level);
         };
     }
 ]);

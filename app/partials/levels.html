@@ -1,12 +1,18 @@
 <div id="levelsContainer" data-ng-controller="HeaderCtrl">
     <div id="levelsInnerContainer">
         <div data-ng-repeat="level in levels" ng-if="level != null" class="level_link">
-            <a href="javascript:void(0)" data-ng-class="{'btn': true, 'btn-success': isCompleteLevel($index), 'btn-warning': isCompleteLevel($index) == false}"
-               data-ng-click="setLevel($index)">
-                <span class="glyphicon glyphicon-remove"></span>
-                {{ level.getName() }}
-            </a>
+            <div ng-show="isCompleteLevel(level)">
+                <a href="javascript:void(0)" class="btn btn-success" data-ng-click="setLevel($index)">
+                    <span class="glyphicon glyphicon-ok"></span>
+                    {{ level.getName() }}
+                </a>
+            </div>
+            <div ng-show="!isCompleteLevel(level)">
+                <a href="javascript:void(0)" class="btn btn-warning" data-ng-click="setLevel($index)">
+                    <span class="glyphicon glyphicon-remove"></span>
+                    {{ level.getName() }}
+                </a>
+            </div>
         </div>
     </div>
 </div>
-<!--glyphicon glyphicon-ok-->
