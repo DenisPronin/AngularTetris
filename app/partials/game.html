@@ -1,5 +1,5 @@
-<div id="gameContainer" class="standart_table">
-    <div data-game-controls data-ng-controller="BoardCtrl" class="pull-left">
+<div id="gameContainer" class="standart_table" data-ng-controller="BoardCtrl">
+    <div data-game-controls class="pull-left">
         <div class="boardContainer">
             <board></board>
             <div data-start-count></div>
@@ -26,6 +26,10 @@
             </div>
             <div id="speedContainer" data-ng-controller="SpeedCtrl">
                 <speed></speed>
+            </div>
+            <div ng-if="levelTimeLimit">
+                <strong>Time:</strong>
+                <timer interval="1000" countdown="levelTimeLimit" finish-callback="callbackTimer.finished()">{{countdown}}</timer>
             </div>
         </div>
     </div>

@@ -81,6 +81,8 @@ services.factory('BaseLevel', [
             var win_conditions = {};
             var description = '';
 
+            var timeEnd = false;
+
             me.initLevel = function(_name, _map, _win_conditions, _description){
                 name = _name;
                 map = _map;
@@ -120,11 +122,29 @@ services.factory('BaseLevel', [
                 return description;
             };
 
-            me.checkWin = function(){
+            me.setTimeEnd = function(isEnd){
+                timeEnd = isEnd;
+            };
+
+            me.getTimeEnd = function(isEnd){
+                return timeEnd;
+            };
+
+            me.checkScore = function(){
                 var win = true;
                 var conditions = me.getWinConditions();
                 if(conditions.needScore){
                     win = ($score.getScore() >= conditions.needScore);
+                }
+
+                return win;
+            };
+
+            me.checkTimeLimit = function(){
+                var win = true;
+                var conditions = me.getWinConditions();
+                if(conditions.timeLimit){
+                    win = timeEnd;
                 }
 
                 return win;

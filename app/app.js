@@ -9,7 +9,8 @@ angular.module('AppTetris', [
     'AppTetris.filters',
     'AppTetris.services',
     'AppTetris.directives',
-    'AppTetris.controllers'
+    'AppTetris.controllers',
+    'timer'
 ]).
 config(['$routeProvider', function($routeProvider) {
     $routeProvider.when('/', {templateUrl: 'app/partials/game.html'});

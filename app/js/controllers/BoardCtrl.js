@@ -30,14 +30,17 @@ ctrls.controller('BoardCtrl', [
         var Fields = new $fields();
         $scope.fields = Fields;
         $scope.levelDescription = null;
+        $scope.levelTimeLimit = null;
+
+        $scope.level = null;
 
         var initBoard = function(){
-            var level = $levels.getCurrentLevel();
-            if(level){
-                Fields.initLevelBoard(level);
-                var description = level.getDescription();
+            $scope.level = $levels.getCurrentLevel();
+            if($scope.level){
+                Fields.initLevelBoard($scope.level);
+                var description = $scope.level.getDescription();
                 $scope.levelDescription = (description) ? description : null;
-                checkLevelWin(level);
+                checkLevel();
             }
             else{ // classic game
                 Fields.initBoard(board_height, board_width, BORDER_WIDTH);
@@ -78,24 +81,47 @@ ctrls.controller('BoardCtrl', [
             }
         };
 
-        var checkLevelWin = function(level){
-            var conditions = level.getWinConditions();
+        var checkLevel = function(){
+            var conditions = $scope.level.getWinConditions();
             if(conditions.needScore){
                 $scope.$watch(function() {
                     return $score.getScore();
                 }, function(newValue, oldValue){
                     if(newValue != oldValue && !$scope.gameOver){
-                        var win = level.checkWin();
-                        if(win){
-                            $levels.setComplete(level);
-                            winGame();
-                        }
+                        checkLevelWin();
                     }
                 });
+            }
+
+            if(conditions.timeLimit){
+                $scope.levelTimeLimit = conditions.timeLimit;
+            }
+        };
+
+        $scope.callbackTimer = {};
+        $scope.callbackTimer.finished = function(){
+            $scope.level.setTimeEnd(true);
+            checkLevelWin();
+        };
+
+        var checkLevelWin = function(){
+            var win_score = $scope.level.checkScore();
+            if($scope.levelTimeLimit){
+                var timeEnd = $scope.level.checkTimeLimit();
+                if(timeEnd && !win_score){
+                    endGame();
+                }
+                else if(timeEnd && win_score){
+                    winGame();
+                }
+            }
+            if(win_score){
+                winGame();
             }
         };
 
         var winGame = function(){
+            $levels.setComplete($scope.level);
             endAllIntervals();
             $scope.gameOver = true;
             $modal.open({
@@ -107,12 +133,14 @@ ctrls.controller('BoardCtrl', [
 
         var endGame = function(figure, start_row, start_col){
             endAllIntervals();
-            if(start_row > 0){
-                // show only part of figure which can entering on board
-                for (var i = start_row-1; i >= 0; i--) {
-                    var hasEndZone = Fields.setZone(figure, i, start_col, true);
-                    if(hasEndZone){
-                        Fields.fillZone(figure);
+            if(figure && start_row && start_col){
+                if(start_row > 0){
+                    // show only part of figure which can entering on board
+                    for (var i = start_row-1; i >= 0; i--) {
+                        var hasEndZone = Fields.setZone(figure, i, start_col, true);
+                        if(hasEndZone){
+                            Fields.fillZone(figure);
+                        }
                     }
                 }
             }
@@ -131,6 +159,7 @@ ctrls.controller('BoardCtrl', [
             $scope.gameOver = false;
             $scope.pause = false;
             initBoard();
+            $scope.startAddFigure();
         };
 
         $scope.startAddFigure = function(){

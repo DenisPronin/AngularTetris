@@ -16,7 +16,7 @@ directives.directive('gameControls', function(){
             var RIGHT_KEY = 39;
             var SPACE_KEY = 32;
 
-            $(window).bind('keydown', function(event){
+            $(window).unbind('keydown').bind('keydown', function(event){
                 if(event.keyCode == UP_KEY){
                     scope.rotate();
                 }
