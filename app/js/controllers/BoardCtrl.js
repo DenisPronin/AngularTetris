@@ -3,14 +3,14 @@
 ctrls.controller('BoardCtrl', [
     '$rootScope',
     '$scope',
-    '$interval',
+    'GameIntervals',
     '$modal',
     'Fields',
     'Figures',
     'Score',
     'Levels',
     'Speed',
-    function($rootScope, $scope, $interval, $modal, $fields, $figures, $score, $levels, $speed) {
+    function($rootScope, $scope, $game_interval, $modal, $fields, $figures, $score, $levels, $speed) {
         $scope.rows = null;
         $scope.gameOver = false;
         $scope.pause = false;
@@ -312,27 +312,25 @@ ctrls.controller('BoardCtrl', [
         };
 
         var setIntervalForChangeSpeed = function(length_interval){
-            speedInterval = $interval(function(){
-                $speed.setNextSpeed()
-            }, length_interval);
+            $game_interval.setSpeedInterval($speed.setNextSpeed, length_interval);
         };
 
         var endSpeedInterval = function(){
-            $interval.cancel(speedInterval);
+            $game_interval.endSpeedInterval();
         };
 
         var startProcess = function(_speed, withoutDelay){
             if(_speed == $speed.getFallenSpeed()){
                 isFallen = true;
             }
-            $scope.movingFigure.process = $interval($scope.moveDown, _speed);
+            $game_interval.setProcessInterval($scope.moveDown, _speed);
             if(withoutDelay){
                 $scope.moveDown();
             }
         };
 
         var endProcess = function(){
-            $interval.cancel($scope.movingFigure.process);
+            $game_interval.endProcessInterval();
         };
 
         var endAllIntervals = function(){
@@ -344,7 +342,7 @@ ctrls.controller('BoardCtrl', [
             return $speed.getNumOfSpeed();
         }, function(newValue, oldValue) {
             speed = $speed.getCurrentSpeed();
-            if($scope.movingFigure && $scope.movingFigure.process && !isFallen){
+            if($scope.movingFigure && $game_interval.getProcessInterval() && !isFallen){
                 endProcess();
                 startProcess(speed, true);
             }

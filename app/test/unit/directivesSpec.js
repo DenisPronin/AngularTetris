@@ -25,11 +25,11 @@ describe('directives', function() {
 
     describe('Key events', function() {
         beforeEach(function () {
-            inject(function ($compile, $rootScope, $controller, $interval, $modal, _Fields_, _Figures_, _Score_, _Levels_, _Speed_, $timeout){
+            inject(function ($compile, $rootScope, $controller, _GameIntervals_, $modal, _Fields_, _Figures_, _Score_, _Levels_, _Speed_, $timeout){
                 timeout = $timeout;
                 $scope = $rootScope.$new();
 
-                var Board = $controller('BoardCtrl', {$scope: $scope, $interval: $interval, $modal: $modal, Fields: _Fields_, Figures: _Figures_ , Score: _Score_, Levels: _Levels_ , Speed: _Speed_ });
+                var Board = $controller('BoardCtrl', {$scope: $scope, $game_interval: _GameIntervals_, $modal: $modal, Fields: _Fields_, Figures: _Figures_ , Score: _Score_, Levels: _Levels_ , Speed: _Speed_ });
                 element = angular.element("<div data-game-controls></div>");
                 $compile(element)($scope);
                 $scope.$digest();
